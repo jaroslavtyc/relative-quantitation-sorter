@@ -1,5 +1,7 @@
 <?php
-class ConsequencesOfMaximalCtValue extends IterableTycClass {
+namespace RqData\OptionalSettings\Consequences;
+
+class MaximalCtValue extends \universal\IterableTycClass {
 
 	const CODE = 'consequencesOfCtMaximum';
 	const HUMAN_NAME ='Úprava hodnot při dosažení maxima CT';
@@ -10,7 +12,7 @@ class ConsequencesOfMaximalCtValue extends IterableTycClass {
 	protected $rqValueEdge;
 
 	public function __construct() {
-		$this->setOptions();
+		$this->setSettings();
 		$this->makeAllPropertiesReadable();
 		parent::__construct(
 			array($this->maximalCtValue,
@@ -20,10 +22,10 @@ class ConsequencesOfMaximalCtValue extends IterableTycClass {
 		);
 	}
 
-	protected function setOptions() {
-		$this->maximalCtValue = new MaximalCtValue;
-		$this->replacementValueUnderMaximum = new ReplacementValueUnderMaximum;
-		$this->replacementValueOverMaximum = new ReplacementValueOverMaximum;
-		$this->rqValueEdge = new RqValueEdge;
+	protected function setSettings() {
+		$this->maximalCtValue = new Settings\MaximalCtValue;
+		$this->replacementValueUnderMaximum = new Settings\ReplacementValueUnderMaximum;
+		$this->replacementValueOverMaximum = new Settings\ReplacementValueOverMaximum;
+		$this->rqValueEdge = new Settings\RqValueEdge;
 	}
 }

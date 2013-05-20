@@ -6,7 +6,7 @@ use RqData\Registry\Errors;
  * Reads history files of resource and result aswell, paired resource and result
  * files
  */
-class File extends \UniversalClass {
+class File extends \universal\BaseClass {
 
 	/**
 	 * List of file names indexed by time of rqdata calling, then by tempname

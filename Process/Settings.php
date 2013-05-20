@@ -31,7 +31,7 @@ class Settings extends Base {
 
 	public function process() {
 		$this->checkOperationToProcess();
-		$this->setOptions();
+		$this->setSettings();
 		$this->checkOptionalSettings();
 	}
 
@@ -55,7 +55,7 @@ class Settings extends Base {
 		}
 	}
 
-	protected function setOptions() {
+	protected function setSettings() {
 		$operation = $this->getRequiredOperation();
 		$errorCounter = 0;
 		foreach ($operation->getListOfExtendingSettings() as $extendingSetting) {
@@ -74,17 +74,17 @@ class Settings extends Base {
 	}
 
 	protected function filterUsedInputSettings() {
-		$this->getInputSettings()->offsetUnset(ReferenceGenes::CODE);
-		$this->getInputSettings()->offsetUnset(Calibrator::CODE);
+		$this->getInputSettings()->offsetUnset(\RqData\RequiredSettings\File\ReferenceGenes::CODE);
+		$this->getInputSettings()->offsetUnset(\RqData\RequiredSettings\File\Calibrator::CODE);
 		$this->getInputSettings()->offsetUnset('operation');
 	}
 
 	protected function alterExtendingSettings(\ExtendingOptions $extendingSetting) {
 		switch ($extendingSetting->code) {
-			case ReferenceGenes::CODE :
+			case \RqData\RequiredSettings\File\ReferenceGenes::CODE :
 				$this->alterExtendingSettingsReferenceGenes($extendingSetting);
 				break;
-			case Calibrator::CODE :
+			case \RqData\RequiredSettings\File\Calibrator::CODE :
 				$this->alterExtendingSettingsCalibrator($extendingSetting);
 				break;
 			default:
@@ -169,7 +169,7 @@ class Settings extends Base {
 		if ($errorCounter > 0) {
 			throw new CheckingOptionalSettingsFails;
 		} else {
-			$this->optionalSettings = array_merge($this->optionalSettings, $optionalSettings);
+			$this->optionalSettings = array_merge($this->optionalSettings, (array) $optionalSettings);
 			return TRUE;
 		}
 	}
@@ -181,8 +181,8 @@ class Settings extends Base {
 				$this->countConsquencesOfCtMaximum($optionalSettings);
 			} catch (\RqData\Debugging\UserException $userException) {
 			}
-			if (isset($this->inputSettings[ConsequencesOfMaximalCtValue::CODE])) {
-				unset($this->inputSettings[ConsequencesOfMaximalCtValue::CODE]);
+			if (isset($this->inputSettings[\RqData\OptionalSettings\Consequences\MaximalCtValue::CODE])) {
+				unset($this->inputSettings[\RqData\OptionalSettings\Consequences\MaximalCtValue::CODE]);
 			}
 		}
 		if ($userException) {
@@ -191,26 +191,26 @@ class Settings extends Base {
 	}
 
 	protected function setOptionalSettingsToKeep(&$optionalSettings) {
-		if (!empty($optionalSettings[MeasurementSettingsToKeep::CODE])) {
-			$this->optionalSettings[MeasurementSettingsToKeep::CODE] = array();
-			$measurementSettingsToSet = &$this->optionalSettings[MeasurementSettingsToKeep::CODE];
-			$givenMeauserementSettings = &$optionalSettings[MeasurementSettingsToKeep::CODE];
-			$meausermentSettings = new \MeasurementSettingsToKeep;
+		if (!empty($optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE])) {
+			$this->optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE] = array();
+			$measurementSettingsToSet = &$this->optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE];
+			$givenMeausermentSettings = &$optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE];
+			$meausermentSettings = new \RqData\OptionalSettings\Registry\MeasurementSettings;
 			foreach ($meausermentSettings as $meausermentSetting) {
-				if (isset($givenMeauserementSettings[$meausermentSetting->code])) {
-					if ($givenMeauserementSettings[$meausermentSetting->code] !== '') {
+				if (isset($givenMeausermentSettings[$meausermentSetting->code])) {
+					if ($givenMeausermentSettings[$meausermentSetting->code] !== '') {
 						$measurementSettingsToSet[$meausermentSetting->code] =
-							$givenMeauserementSettings[$meausermentSetting->code];
+							$givenMeausermentSettings[$meausermentSetting->code];
 					}
 				}
 			}
-			unset($optionalSettings[MeasurementSettingsToKeep::CODE]);
+			unset($optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE]);
 		}
 	}
 
 	protected function checkAdditionalFormatingSettings($optionalSettings) {
 		$correct = TRUE;
-		foreach (array_keys($optionalSettings) as $dodatkoveNastaveni) {
+		foreach ($optionalSettings as $dodatkoveNastaveni => $value) {
 			switch($dodatkoveNastaveni){
 				case 'smazaniJmenLidi':
 					break;
@@ -230,7 +230,7 @@ class Settings extends Base {
 
 	protected function countConsquencesOfCtMaximum(&$optionalSettings) {
 		$failureCount = 0;
-		foreach ($this->getConsequencesOfMaximalCtValue() as $settingOfConsequence) {
+		foreach ($this->getMaximalCtValue() as $settingOfConsequence) {
 			try {
 				$this->countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence);
 			} catch (\RqData\Debugging\UserException $userException) {
@@ -244,7 +244,7 @@ class Settings extends Base {
 
 	protected function countConsquenceOfCtMaximum(&$optionalSettings, $settingOfConsequence) {
 		if (!isset($optionalSettings[$settingOfConsequence->code])) {
-			$this->getErrors()->zapamatujChybu('Chybí ' . $settingOfConsequence->humanName, ConsequencesOfMaximalCtValue::HUMAN_NAME);
+			$this->getErrors()->zapamatujChybu('Chybí ' . $settingOfConsequence->humanName, MaximalCtValue::HUMAN_NAME);
 			throw new MissingConsequenceForCtMaximumValue($settingOfConsequence->code);
 		} else {
 			$consequenceValue = str_replace(',', '.', $optionalSettings[$settingOfConsequence->code]);
@@ -260,8 +260,11 @@ class Settings extends Base {
 		}
 	}
 
-	protected function getConsequencesOfMaximalCtValue() {
-		return new \ConsequencesOfMaximalCtValue;
+	/**
+	 * @return \RqData\OptionalSettings\Consequences\MaximalCtValue
+	 */
+	protected function getMaximalCtValue() {
+		return new \RqData\OptionalSettings\Consequences\MaximalCtValue;
 	}
 }
 

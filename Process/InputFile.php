@@ -25,11 +25,11 @@ class InputFile extends Base {
 				throw new InputFileIsMissing;
 			}
 		}
-		$this->uploadedFile = new \UploadedFile(FileWithData::FILE_NAME);
+		$this->uploadedFile = new \universal\Folder\File\UploadedFile(FileWithData::FILE_NAME);
 	}
 
 	/**
-	 * @return \UploadedFile
+	 * @return \universal\Folder\File\UploadedFile
 	 */
 	public function getUploadedFile() {
 		return $this->uploadedFile;

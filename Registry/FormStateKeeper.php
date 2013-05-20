@@ -1,10 +1,10 @@
 <?php
 namespace RqData\Registry;
 
-class FormStateKeeper extends \UniversalClass {
+class FormStateKeeper extends \universal\BaseClass {
 
 	public function __construct() {
-		\Session::ensure();
+		\universal\Registry\Session::ensure();
 	}
 
 	public function holdFormStates(array $formStates) {

@@ -184,8 +184,8 @@ class Result extends Base {
 		if (!empty($this->extendingSettings['referenceGenes'])) {
 			$this->addReferenceGenesLegend($xls, $this->extendingSettings['referenceGenes']);
 		}
-		if (!empty($this->optionalSettings[MeasurementSettingsToKeep::CODE])) {
-			$this->addMeasurementSettingsToKeepLegend($xls, $this->optionalSettings[MeasurementSettingsToKeep::CODE]);
+		if (!empty($this->optionalSettings[MeasurementSettings::CODE])) {
+			$this->addMeasurementSettingsToKeepLegend($xls, $this->optionalSettings[MeasurementSettings::CODE]);
 		}
 	}
 
@@ -205,7 +205,7 @@ class Result extends Base {
 	protected function addMeasurementSettingsToKeepLegend(\HtmlXlsFile $xls, $settingsToKeep) {
 		$footerData = array();
 		$possibleMeauserments = array();
-		foreach (new \MeasurementSettingsToKeep as $possibleMeauserment) {
+		foreach (new \MeasurementSettings as $possibleMeauserment) {
 			$possibleMeauserments[$possibleMeauserment->code] = $possibleMeauserment;
 		}
 		foreach ($settingsToKeep as $code => $meausermentSetting) {

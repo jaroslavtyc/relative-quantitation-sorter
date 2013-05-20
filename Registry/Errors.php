@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Registry;
 
-class Errors extends \HtmlChyby {
+class Errors extends \universal\HtmlChyby {
 
 	private static $instance;
 

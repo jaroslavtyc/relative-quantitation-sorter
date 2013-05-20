@@ -43,7 +43,7 @@ class InputValues extends Base {
 		return $this->timeTempnameKey;
 	}
 
-	public function getColumnPurpose() {
+	public function getColumnsPurpose() {
 		return $this->getSettings()->getColumnsPurpose();
 	}
 

@@ -19,6 +19,10 @@ class Homepage extends DisplayWithErrorMessages {
 		$this->getViewer()->assign('consequence', $this->getConsequence());
 		$this->getViewer()->assign('measurementSettings', $this->getMeasurements());
 		$this->getViewer()->assign('inputFileName', \RqData\RequiredSettings\File\FileWithData::FILE_NAME);
+		$this->getViewer()->assign('maximalCtValueConsequencesCode', \RqData\OptionalSettings\Consequences\Settings\MaximalCtValue::CODE);
+		$this->getViewer()->assign('maximalCtValueConsequencesName', \RqData\OptionalSettings\Consequences\Settings\MaximalCtValue::HUMAN_NAME);
+		$this->getViewer()->assign('measurementSettingsRegistryCode', \RqData\OptionalSettings\Registry\MeasurementSettings::CODE);
+		$this->getViewer()->assign('measurementSettingsRegistryName', \RqData\OptionalSettings\Registry\MeasurementSettings::HUMAN_NAME);
 	}
 
 	protected function setUpTemplatesToView() {
@@ -34,11 +38,11 @@ class Homepage extends DisplayWithErrorMessages {
 	}
 
 	protected function getConsequence() {
-		return new \ConsequencesOfMaximalCtValue;
+		return new \RqData\OptionalSettings\Consequences\MaximalCtValue;
 	}
 
 	protected function getMeasurements() {
-		return new \MeasurementSettingsToKeep;
+		return new \RqData\OptionalSettings\Registry\MeasurementSettings;
 	}
 
 	protected function getFormStateHolder() {

@@ -1,7 +1,7 @@
 <?php
 namespace RqData\RequiredSettings\File;
 
-abstract class ExtendingOptions extends \SingleHtmlOptionModel {
+abstract class ExtendingOptions extends \universal\SingleHtmlOptionModel {
 
 	protected $note;
 

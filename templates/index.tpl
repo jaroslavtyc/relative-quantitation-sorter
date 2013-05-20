@@ -41,11 +41,11 @@
 				</tbody>
 			</table>
 			<hr />
-			<div id="{ConsequencesOfMaximalCtValue::CODE}">
+			<div id="{$maximalCtValueConsequencesCode}">
 				<h4>
 					<label>
-						<input type='checkbox' checked='true' name='{ConsequencesOfMaximalCtValue::CODE}' disabled='disabled' />
-						<span>{ConsequencesOfMaximalCtValue::HUMAN_NAME}</span>
+						<input type='checkbox' checked='true' name='{$maximalCtValueConsequencesCode}' disabled='disabled' />
+						<span>{$maximalCtValueConsequencesName}</span>
 					</label>
 				</h4>
 				Pokud {$consequence->maximalCtValue->humanName} dosáhne
@@ -74,11 +74,11 @@
 				</ul>
 			</div>
 			<hr />
-			<div id="{MeasurementSettingsToKeep::CODE}">
-				<h4>{MeasurementSettingsToKeep::HUMAN_NAME}</h4>
+			<div id="{$measurementSettingsRegistryCode}">
+				<h4>{$measurementSettingsRegistryName}</h4>
 				{foreach from=$measurementSettings item=measurementSetting}
 					<label>
-						{$measurementSetting->humanName}:&nbsp;<input type="text" name="{MeasurementSettingsToKeep::CODE}[{$measurementSetting->code}]" value="{$formStatesHistory->resolveArrayValue(MeasurementSettingsToKeep::CODE, $measurementSetting->code, $measurementSetting->value)}" size="10"/>
+						{$measurementSetting->humanName}:&nbsp;<input type="text" name="{$measurementSettingsRegistryCode}[{$measurementSetting->code}]" value="{$formStatesHistory->resolveArrayValue($measurementSettingsRegistryCode, $measurementSetting->code, $measurementSetting->value)}" size="10"/>
 					</label>
 				{/foreach}
 			</div>

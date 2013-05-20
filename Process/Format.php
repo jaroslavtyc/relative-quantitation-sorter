@@ -300,7 +300,7 @@ class Format extends Base {
 		if (!array_key_exists($nameOfUserDefinedCalibrator, $preformedData)) {
 			$this->errors->zapamatujChybu(
 				sprintf('s názvem "%s" není zastoupen', $nameOfUserDefinedCalibrator),
-				Calibrator::HUMAN_NAME
+				\RqData\RequiredSettings\File\Calibrator::HUMAN_NAME
 			);
 			$invalid = TRUE;
 		}
@@ -316,7 +316,7 @@ class Format extends Base {
 			}
 			$this->errors->zapamatujChybu(
 				sprintf('ve zdrojovém souboru chybí %s', implode(', ', $notInvolvedReferenceGenes)),
-				ReferenceGenes::HUMAN_NAME
+				\RqData\RequiredSettings\File\ReferenceGenes::HUMAN_NAME
 			);
 			$invalid = TRUE;
 		}
@@ -450,7 +450,7 @@ class Format extends Base {
 				if (!isset($calibratorData[$geneName])) {
 					$this->errors->zapamatujChybu(
 						'chybí informace o genu ' . $geneName,
-						Calibrator::HUMAN_NAME
+						\RqData\RequiredSettings\File\Calibrator::HUMAN_NAME
 					);
 
 					return FALSE;

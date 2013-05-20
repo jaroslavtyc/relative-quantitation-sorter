@@ -15,7 +15,7 @@ abstract class Display {
 	abstract protected function render();
 
 	/**
-	 * @return \TycSmarty
+	 * @return \universal\View\Smarty
 	 */
 	protected function getViewer() {
 		if (!isset($this->viewer)) {
@@ -25,10 +25,10 @@ abstract class Display {
 	}
 
 	/**
-	 * @return \TycSmarty
+	 * @return \universal\View\Smarty
 	 */
 	protected function buildViewer() {
-		$smarty = \TycSmarty::get();
+		$smarty = \universal\View\Smarty::get();
 		$smarty->debugging = FALSE;
 		$smarty->caching = FALSE;
 		return $smarty;

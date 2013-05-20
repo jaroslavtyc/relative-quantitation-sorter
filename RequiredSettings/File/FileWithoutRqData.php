@@ -13,8 +13,8 @@ class FileWithoutRqData extends FileWithData {
 
 	protected function setListOfExtendingSettings() {
 		$this->listOfExtendingSettings = array(
-			 new Calibrator,
-			 new ReferenceGenes,
+			 new \RqData\RequiredSettings\File\Calibrator,
+			 new \RqData\RequiredSettings\File\ReferenceGenes,
 		);
 	}
 }

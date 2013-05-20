@@ -1,9 +1,10 @@
 <?php
+namespace RqData\OptionalSettings\Registry;
 /*
  * Values used to set meauserement, needed to be saved for optional
  * human backward control
  */
-class MeasurementSettingsToKeep extends IterableTycClass {
+class MeasurementSettings extends \universal\IterableTycClass {
 
 	const HUMAN_NAME = 'Uložení parametrů programu RQ Study';
 	const CODE = 'measurementSettingsToKeep';
@@ -12,13 +13,13 @@ class MeasurementSettingsToKeep extends IterableTycClass {
 	protected $baseline;
 
 	public function __construct() {
-		$this->setOptions();
+		$this->setSettings();
 		$this->makeAllPropertiesReadable();
 		parent::__construct(array($this->treshold, $this->baseline));
 	}
 
-	protected function setOptions() {
-		$this->treshold = new MeasurementTreshold;
-		$this->baseline = new MeasurementBaseline;
+	protected function setSettings() {
+		$this->treshold = new Settings\MeasurementTreshold;
+		$this->baseline = new Settings\MeasurementBaseline;
 	}
 }
