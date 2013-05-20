@@ -20,7 +20,7 @@
 {foreach from=$operationList item=operation}
 						<td>
 							<label>{$operation->humanName}
-								<input id="{$operation->optionMask}" type="radio" name="operation" value="{$operation->optionMask}"{if $operation->optionMask == $formStatesHistory->resolveValue('operation', $operation->optionMask)}checked="checked"{/if} />&nbsp;
+								<input id="{$operation->optionMask}" type="radio" name="operation" value="{$operation->optionMask}"{if $operation->optionMask == $formStatesHistory->resolveValue('operation', $operation->optionMask)} checked="checked"{/if} />&nbsp;
 							</label>
 	{if $operation->listOfExtendingSettings}
 							<ul id="{$operation->optionMask}_extended_settings">
