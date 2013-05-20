@@ -1,0 +1,2 @@
+table#file-history tr>td {white-space: nowrap }
+table#file-history td { min-width: 50px; padding: 5px }
