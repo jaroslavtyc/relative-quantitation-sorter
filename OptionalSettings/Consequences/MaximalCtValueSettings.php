@@ -1,7 +1,7 @@
 <?php
 namespace RqData\OptionalSettings\Consequences;
 
-class MaximalCtValue extends \universal\IterableTycClass {
+class MaximalCtValueSettings extends \universal\IterableTycClass {
 
 	const CODE = 'consequencesOfCtMaximum';
 	const HUMAN_NAME ='Úprava hodnot při dosažení maxima CT';
