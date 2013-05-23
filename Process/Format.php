@@ -156,7 +156,7 @@ class Format extends Base {
 		if (!isset($currentGeneData[ColumnsPurpose::CT_VALUES])) {
 			if (isset($row[$ctDataPosition]) && $row[$ctDataPosition] !== '') {
 				if (self::DISALLOW_MAXIMUM_CT_FOR_CALIBRATOR
-					&& $row[$ctDataPosition] >= MaximalCtValue::VALUE
+					&& $row[$ctDataPosition] >= MaximalCtValueSettings::VALUE
 				) {
 					if (empty($currentCalibratorCandidate['maximum_reached'])) {
 						$currentCalibratorCandidate['maximum_reached'] = array(
@@ -360,7 +360,7 @@ class Format extends Base {
 					// optional RQ value replacement in dependency on CT value
 					if (\RqData\Process\Settings::COUNT_CONSEQUENCES_OF_CT_MAXIMUM) {
 						if ($currentGeneData[ColumnsPurpose::CT_VALUES] >=
-							MaximalCtValue::VALUE
+							MaximalCtValueSettings::VALUE
 						) {
 							if ($currentGeneData[ColumnsPurpose::RQ_VALUES] <
 								$this->optionalSettings[RqValueEdge::CODE]
@@ -410,7 +410,7 @@ class Format extends Base {
 					sprintf(
 						'Hodnota Ct kalibrátoru "%s" dosáhla nepovolené hodnoty %s pro detektor "%s" na řádku %d',
 						$nameOfCalibrator,
-						MaximalCtValue::VALUE,
+						MaximalCtValueSettings::VALUE,
 						$maximum['geneName'],
 						($maximum['rowIndex'] +1)
 					),
