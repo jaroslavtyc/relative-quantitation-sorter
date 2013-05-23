@@ -3,7 +3,7 @@ namespace RqData\RequiredSettings\File;
 
 class FileWithRqData extends FileWithData {
 
-	const HUMAN_NAME = 'Soubor obsahuje RQ údaje';
+	const HUMAN_NAME = 'Soubor obsahuje RQ data';
 	const CODE = 'fileWithData';
 	const VALUE = '';
 
