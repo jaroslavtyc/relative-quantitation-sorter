@@ -84,7 +84,7 @@ class InputValues extends Base {
 				FileUtilities::getUserResourceFileFolderPath(),
 				$this->timeTempnameKey . '_' . $this->getInputFile()->getUploadedFile()->size . '_' . $this->getInputFile()->getUploadedFile()->name
 			)) {
-				$this->errors->zapamatujChybu('Nezdařilo se uložit nahraný soubor', 'Historie');
+				$this->getErrors()->zapamatujChybu('Nezdařilo se uložit nahraný soubor', 'Historie');
 
 				return FALSE;
 			}
@@ -96,7 +96,7 @@ class InputValues extends Base {
 	private function inputValuesSetRawData() {
 		$this->inputData = $this->getInputFile()->getUploadedFile()->getContentArray();
 		if (!$this->inputData) {
-			$this->errors->zapamatujChybu('je prázdný', 'Soubor');
+			$this->getErrors()->zapamatujChybu('je prázdný', 'Soubor');
 			throw new InputFileIsEmpty;
 		}
 	}
@@ -126,7 +126,7 @@ class InputValues extends Base {
 			}
 			$row = explode("\t", $row); //split row to items
 			if (sizeof($row) < $numberOfColumns) {
-				$this->errors->zapamatujChybu(sprintf(
+				$this->getErrors()->zapamatujChybu(sprintf(
 									 'chybný (%s)', (sizeof($row) > 1) ? sprintf('málo sloupců (%d) na řádku %d, požadováno %d', sizeof($row), $rowIndex + 1, $numberOfColumns) : 'nenalezen oddělovač tabulátor'
 						  ), 'Formát souboru'
 				);
@@ -136,7 +136,7 @@ class InputValues extends Base {
 				// is greater then required
 				foreach ($row as $tierOfItem => $item) {
 					if ($tierOfItem >= ColumnsPurpose::getNumberOfPossibleColumns() && trim($item) !== '') {
-						$this->errors->zapamatujChybu(sprintf(
+						$this->getErrors()->zapamatujChybu(sprintf(
 											 'chybný; na řádku %d zjištěno příliš mnoho sloupců', $rowIndex
 								  ), 'Formát souboru'
 						);
