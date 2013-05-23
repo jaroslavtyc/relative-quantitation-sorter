@@ -31,8 +31,8 @@ class Settings extends Base {
 
 	public function process() {
 		$this->checkOperationToProcess();
+		$this->setOptionalSettings();
 		$this->setSettings();
-		$this->checkOptionalSettings();
 	}
 
 	protected function checkOperationToProcess() {
@@ -42,7 +42,7 @@ class Settings extends Base {
 
 	protected function checkIfOpreationIsSet() {
 		if (!$this->getInputSettings()->offsetExists('operation')
-			|| (bool) $this->getInputSettings()->offsetGet('operation') === false
+			|| ((string) $this->getInputSettings()->offsetGet('operation') === '')
 		) {
 			$this->getErrors()->zapamatujChybu('chybí','Určení obsahu souboru');
 			throw new NoOperationIsChoosen;
@@ -68,15 +68,7 @@ class Settings extends Base {
 		}
 		if ($errorCounter > 0) {
 			throw new SettingUpByInputSettingsFail($errorCounter);
-		} else {
-			$this->filterUsedInputSettings();
 		}
-	}
-
-	protected function filterUsedInputSettings() {
-		$this->getInputSettings()->offsetUnset(\RqData\RequiredSettings\File\ReferenceGenes::CODE);
-		$this->getInputSettings()->offsetUnset(\RqData\RequiredSettings\File\Calibrator::CODE);
-		$this->getInputSettings()->offsetUnset('operation');
 	}
 
 	protected function alterExtendingSettings(\ExtendingOptions $extendingSetting) {
@@ -147,12 +139,14 @@ class Settings extends Base {
 		return $this->getOperationList()->getOperation($this->getInputSettingsValue('operation'));
 	}
 
-	protected function checkOptionalSettings() {
+	protected function setOptionalSettings() {
 		$this->optionalSettings = array();
-		$optionalSettings = $this->inputSettings;
+		$optionalSettings = $this->getInputSettings()->offsetGet('optional');
 		$errorCounter = 0;
 		try {
-			$this->checkConsequencesOfMaximum($optionalSettings);
+			if (self::COUNT_CONSEQUENCES_OF_CT_MAXIMUM) {
+				$this->countConsequencesOfCtMaximum($optionalSettings);
+			}
 		} catch (\RqData\Debugging\UserException $userException) {
 			$errorCounter++;
 		}
@@ -161,76 +155,36 @@ class Settings extends Base {
 		} catch (\RqData\Debugging\UserException $userException) {
 			$errorCounter++;
 		}
-		try {
-			$this->checkAdditionalFormatingSettings($optionalSettings);
-		} catch (\RqData\Debugging\UserException $userException) {
-			$errorCounter++;
-		}
 		if ($errorCounter > 0) {
 			throw new CheckingOptionalSettingsFails;
-		} else {
-			$this->optionalSettings = array_merge($this->optionalSettings, (array) $optionalSettings);
-			return TRUE;
 		}
 	}
 
-	protected function checkConsequencesOfMaximum(&$optionalSettings) {
-		$userException = FALSE;
-		if (self::COUNT_CONSEQUENCES_OF_CT_MAXIMUM) {
-			try {
-				$this->countConsquencesOfCtMaximum($optionalSettings);
-			} catch (\RqData\Debugging\UserException $userException) {
-			}
-			if (isset($this->inputSettings[\RqData\OptionalSettings\Consequences\MaximalCtValue::CODE])) {
-				unset($this->inputSettings[\RqData\OptionalSettings\Consequences\MaximalCtValue::CODE]);
-			}
-		}
-		if ($userException) {
-			throw new $userException;
-		}
-	}
-
-	protected function setOptionalSettingsToKeep(&$optionalSettings) {
-		if (!empty($optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE])) {
-			$this->optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE] = array();
-			$measurementSettingsToSet = &$this->optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE];
-			$givenMeausermentSettings = &$optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE];
-			$meausermentSettings = new \RqData\OptionalSettings\Registry\MeasurementSettings;
-			foreach ($meausermentSettings as $meausermentSetting) {
-				if (isset($givenMeausermentSettings[$meausermentSetting->code])) {
-					if ($givenMeausermentSettings[$meausermentSetting->code] !== '') {
-						$measurementSettingsToSet[$meausermentSetting->code] =
-							$givenMeausermentSettings[$meausermentSetting->code];
+	protected function setOptionalSettingsToKeep($optionalSettings) {
+		$mainCode = \RqData\OptionalSettings\Registry\MeasurementSettings::CODE;
+		$this->optionalSettings[$mainCode] = array();
+		if (!empty($optionalSettings[$mainCode])) {
+			$givenSettings = $optionalSettings[$mainCode];
+			foreach ($this->getMeausermentSettings() as $meausermentSetting) {
+				if (isset($givenSettings[$meausermentSetting->code])) {
+					if ($givenSettings[$meausermentSetting->code] !== '') {
+						$this->optionalSettings[$mainCode][$meausermentSetting->code] = $givenSettings[$meausermentSetting->code];
 					}
 				}
 			}
-			unset($optionalSettings[\RqData\OptionalSettings\Registry\MeasurementSettings::CODE]);
 		}
 	}
 
-	protected function checkAdditionalFormatingSettings($optionalSettings) {
-		$correct = TRUE;
-		foreach ($optionalSettings as $dodatkoveNastaveni => $value) {
-			switch($dodatkoveNastaveni){
-				case 'smazaniJmenLidi':
-					break;
-				case 'presunNazvuGenuDoHlavicky':
-					break;
-				case 'pridaniZkratekObsahuDoHlavickyGenu':
-					break;
-				default:
-					$this->getErrors()->zapamatujChybu($dodatkoveNastaveni, 'Neznámé dodatkové nastavení');
-					$correct = FALSE;
-			}
-		}
-		if (!$correct) {
-			throw new UnknownAdditionalFormatingSettings;
-		}
+	/**
+	 * @return \RqData\OptionalSettings\Registry\MeasurementSettings
+	 */
+	protected function getMeausermentSettings() {
+		return new \RqData\OptionalSettings\Registry\MeasurementSettings;
 	}
 
-	protected function countConsquencesOfCtMaximum(&$optionalSettings) {
+	protected function countConsequencesOfCtMaximum($optionalSettings) {
 		$failureCount = 0;
-		foreach ($this->getMaximalCtValue() as $settingOfConsequence) {
+		foreach ($this->getMaximalCtValueSettingsOfConsequences() as $settingOfConsequence) {
 			try {
 				$this->countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence);
 			} catch (\RqData\Debugging\UserException $userException) {
@@ -242,13 +196,12 @@ class Settings extends Base {
 		}
 	}
 
-	protected function countConsquenceOfCtMaximum(&$optionalSettings, $settingOfConsequence) {
+	protected function countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence) {
 		if (!isset($optionalSettings[$settingOfConsequence->code])) {
-			$this->getErrors()->zapamatujChybu('Chybí ' . $settingOfConsequence->humanName, MaximalCtValue::HUMAN_NAME);
+			$this->getErrors()->zapamatujChybu('Chybí ' . $settingOfConsequence->humanName, \RqData\OptionalSettings\Consequences\MaximalCtValueSettings::HUMAN_NAME);
 			throw new MissingConsequenceForCtMaximumValue($settingOfConsequence->code);
 		} else {
 			$consequenceValue = str_replace(',', '.', $optionalSettings[$settingOfConsequence->code]);
-			unset($optionalSettings[$settingOfConsequence->code]);
 			if (!preg_match('~^([\d]+([.\d]+)?)?$~', $consequenceValue)) {
 				$this->getErrors()->zapamatujChybu($settingOfConsequence->humanName . ' musí být číslo', 'Chybný formát');
 				throw new WrongFormatOfConsequenceValueForCtMaximumValue(sprintf(
@@ -261,10 +214,10 @@ class Settings extends Base {
 	}
 
 	/**
-	 * @return \RqData\OptionalSettings\Consequences\MaximalCtValue
+	 * @return \RqData\OptionalSettings\Consequences\MaximalCtValueSettings
 	 */
-	protected function getMaximalCtValue() {
-		return new \RqData\OptionalSettings\Consequences\MaximalCtValue;
+	protected function getMaximalCtValueSettingsOfConsequences() {
+		return new \RqData\OptionalSettings\Consequences\MaximalCtValueSettings;
 	}
 }
 
