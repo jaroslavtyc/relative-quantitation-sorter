@@ -14,7 +14,7 @@
 {foreach from=$operationList item=operation name=operations}
 			<div class="half-width operation">
 				<label class="nowrap">{$operation->humanName}
-					<input type="radio" class="display_trigger_name_{$operation->optionMask}" id="operation_{$operation->optionMask}" name="operation" value="{$operation->optionMask}"{if $operation->optionMask == $formStatesHistory->resolveValue('operation', $operation->optionMask)} {/if}/>&nbsp;
+					<input type="radio" class="display_trigger_name_{$operation->optionMask}" id="operation_{$operation->optionMask}" name="operation" value="{$operation->optionMask}"{if $operation->optionMask == $formStatesHistory->resolveValue('operation', $operation->optionMask)} {/if}{if $smarty.foreach.operations.last} checked="checked" {/if}/>&nbsp;
 				</label>
 {if $operation->listOfExtendingSettings}
 				<ul class="display_on_trigger_name_{$operation->optionMask} operation_extended_settings" id="operation_extended_settings_{$operation->optionMask}">
@@ -28,6 +28,7 @@
 {/if}
 			</div>
 {/foreach}
+		</div>
 		<hr />
 		<div>
 			<h3><label>{$consequence->maximalCtValue->humanName}</label></h3>
@@ -79,11 +80,9 @@
 </div>
 {/block}
 {block "footer"}
-<span id="footer">
 	{if isset($footerJs)}
 		{foreach from=$footerJs item=jsFile}
 				<script type="text/javascript" src="js/{$jsFile}"></script>
 		{/foreach}
 	{/if}
-</span>
 {/block}
