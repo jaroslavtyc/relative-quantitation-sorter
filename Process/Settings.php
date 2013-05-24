@@ -7,11 +7,11 @@ class Settings extends Base {
 
 	const COUNT_CONSEQUENCES_OF_CT_MAXIMUM = TRUE;
 
-	private $columnsPurpose;
-	private $operationList;
-	private $optionalSettings;
-	private $extendingSettings = array();
-	private $inputSettings;
+	protected $columnsPurpose;
+	protected $operationList;
+	protected $optionalSettings;
+	protected $extendingSettings = array();
+	protected $inputSettings;
 
 	public function __construct(\ArrayAccess $inputSettings, Errors $errors) {
 		parent::__construct($errors);
@@ -33,6 +33,10 @@ class Settings extends Base {
 		$this->checkOperationToProcess();
 		$this->setOptionalSettings();
 		$this->setSettings();
+	}
+
+	public function getExtendingSettings() {
+		return $this->extendingSettings;
 	}
 
 	protected function checkOperationToProcess() {
@@ -71,7 +75,7 @@ class Settings extends Base {
 		}
 	}
 
-	protected function alterExtendingSettings(\ExtendingOptions $extendingSetting) {
+	protected function alterExtendingSettings(\RqData\RequiredSettings\File\ExtendingOptions $extendingSetting) {
 		switch ($extendingSetting->code) {
 			case \RqData\RequiredSettings\File\ReferenceGenes::CODE :
 				$this->alterExtendingSettingsReferenceGenes($extendingSetting);
@@ -84,12 +88,12 @@ class Settings extends Base {
 		}
 	}
 
-	protected function alterExtendingSettingsCalibrator(\ExtendingOptions $extendingSetting) {
+	protected function alterExtendingSettingsCalibrator(\RqData\RequiredSettings\File\ExtendingOptions $extendingSetting) {
 		$this->extendingSettings['calibrator'] = trim($this->getInputSettingsValue($extendingSetting->code));
 	}
 
-	protected function alterExtendingSettingsReferenceGenes(\ExtendingOptions $extendingSetting) {
-		$referenceGenes =	explode(ReferenceGenesSeparator::VALUE, $this->getInputSettingsValue($extendingSetting->code));
+	protected function alterExtendingSettingsReferenceGenes(\RqData\RequiredSettings\File\ExtendingOptions $extendingSetting) {
+		$referenceGenes =	explode(\RqData\RequiredSettings\File\ReferenceGenesSeparator::VALUE, $this->getInputSettingsValue($extendingSetting->code));
 		foreach ($referenceGenes as $index => $referenceGene) {
 			$referenceGenes[$index] = trim($referenceGene);
 		}

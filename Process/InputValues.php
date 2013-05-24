@@ -4,7 +4,6 @@ namespace RqData\Process;
 use RqData\Registry\Errors;
 use \RqData\Process\Settings;
 use RqData\RequiredSettings\File\FileWithData;
-use RqData\RequiredSettings\File\FileUtilities;
 
 class InputValues extends Base {
 
@@ -47,6 +46,10 @@ class InputValues extends Base {
 		return $this->getSettings()->getColumnsPurpose();
 	}
 
+	public function getExtendingSettings() {
+		return $this->getSettings()->getExtendingSettings();
+	}
+
 	/**
 	 * @return InputFile
 	 */
@@ -81,7 +84,7 @@ class InputValues extends Base {
 			}
 
 			if (!$this->getInputFile()->getUploadedFile()->copyTo(
-				FileUtilities::getUserResourceFileFolderPath(),
+				\RqData\History\FileUtilities::getUserResourceFileFolderPath(),
 				$this->timeTempnameKey . '_' . $this->getInputFile()->getUploadedFile()->size . '_' . $this->getInputFile()->getUploadedFile()->name
 			)) {
 				$this->getErrors()->zapamatujChybu('Nezdařilo se uložit nahraný soubor', 'Historie');
