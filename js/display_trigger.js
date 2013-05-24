@@ -26,7 +26,7 @@ function displayTrigger(element) {
 		}
 		for (nameIndex = 0; nameIndex < triggeringNamesSuffix.length; nameIndex++) {
 			var revealedClassSelector = '.display_on_trigger_name_' + triggeringNamesSuffix[nameIndex];
-			if ($(input).attr('checked') === 'checked') {
+			if ($(input).prop('checked') === true) {
 				$(revealedClassSelector).show();
 			} else {
 				$(revealedClassSelector).hide();
