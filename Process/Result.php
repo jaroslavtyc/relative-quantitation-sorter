@@ -66,7 +66,7 @@ class Result extends Base {
 	}
 
 	protected function setResultFile($filename) {
-		$this->resultFile = new \File($filename);
+		$this->resultFile = new \universal\Folder\File\File($filename);
 	}
 
 	/**
