@@ -18,6 +18,7 @@ class Result extends Base {
 	private $format;
 	protected $resultFile;
 	protected $resultFilename;
+	protected $userFileBasename;
 
 	public function __construct(Format $format, Errors $errors) {
 		parent::__construct($errors);
@@ -33,14 +34,14 @@ class Result extends Base {
 		}
 	}
 
-	protected function getResultFileBasename() {
-		if (!isset($this->resultFilename)) {
-			$this->resultFilename = $this->createResultFilename();
+	public function getUserFileBasename() {
+		if (!isset($this->userFileBasename)) {
+			$this->userFileBasename = $this->createUserFileBasename();
 		}
-		return $this->resultFilename;
+		return $this->userFileBasename;
 	}
 
-	protected function createResultFilename() {
+	protected function createUserFileBasename() {
 		$fileName = self::BASE_RESULT_FILENAME;
 		if (self::ADD_DATE_TO_RESULT_FILENAME) {
 			$fileName .= date('_j_n_Y H-i-s');
@@ -51,7 +52,7 @@ class Result extends Base {
 
 	protected function getResultFilename() {
 		if (!isset($this->resultFilename)) {
-			$this->resultFilename = tempnam(sys_get_temp_dir(), $this->getResultFileBasename());
+			$this->resultFilename = tempnam(sys_get_temp_dir(), $this->getUserFileBasename());
 		}
 		return $this->resultFilename;
 	}
@@ -76,13 +77,6 @@ class Result extends Base {
 		return $this->format;
 	}
 
-	public function getFileBasename() {
-		return $this->getResultFileBasename();
-	}
-
-	/**
-	 * @return \File
-	 */
 	public function getFilename() {
 		return $this->getResultFilename();
 	}
