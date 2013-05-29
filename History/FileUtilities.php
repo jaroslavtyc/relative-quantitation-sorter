@@ -3,30 +3,28 @@ namespace RqData\History;
 
 class FileUtilities {
 
-	final protected static function getHistoryRootFolderPath() {
-		return __DIR__ . '/../history/';
+	public static function getUrlHistoryRootFolderPath() {
+		return '/' . basename(self::getHistoryRootFolderPath());
 	}
 
-	final public static function getUrlHistoryRootFolderPath() {
-		return '/' . basename(realpath(self::getHistoryRootFolderPath()));
+	protected static function getHistoryRootFolderPath() {
+		return realpath(__DIR__ . '/../historyFiles/');
 	}
 
 	public static function getUserResourceFileFolder() {
-		return 'resource/';
+		return 'resource';
 	}
 
 	public static function getUserResultFileFolder() {
-		return 'result/';
+		return 'result';
 	}
 
 	public static function getUserResourceFileFolderPath() {
-		return realpath(self::getHistoryRootFolderPath() .
-			self::getUserResourceFileFolder());
+		return realpath(self::getHistoryRootFolderPath() . self::getUserResourceFileFolder());
 	}
 
 	public static function getUserResultFileFolderPath() {
-		return realpath(self::getHistoryRootFolderPath() .
-			self::getUserResultFileFolder());
+		return realpath(self::getHistoryRootFolderPath() . self::getUserResultFileFolder());
 	}
 
 	public static function createFileUrl($historyType, $unixstamp, $tempName, $fileInfo) {
