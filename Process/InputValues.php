@@ -50,6 +50,10 @@ class InputValues extends Base {
 		return $this->getSettings()->getExtendingSettings();
 	}
 
+	public function getOptionalSettings() {
+		return $this->getSettings()->getOptionalSettings();
+	}
+
 	/**
 	 * @return InputFile
 	 */

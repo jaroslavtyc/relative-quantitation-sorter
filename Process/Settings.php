@@ -39,6 +39,10 @@ class Settings extends Base {
 		return $this->extendingSettings;
 	}
 
+	public function getOptionalSettings() {
+		return $this->optionalSettings;
+	}
+
 	protected function checkOperationToProcess() {
 		$this->checkIfOpreationIsSet();
 		$this->checkChoosenOperation();

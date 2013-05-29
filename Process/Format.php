@@ -4,6 +4,9 @@ namespace RqData\Process;
 use RqData\Registry\Errors;
 use RqData\RequiredSettings\Options\ColumnsPurpose;
 use RqData\OptionalSettings\Consequences\Settings\MaximalCtValue;
+use RqData\OptionalSettings\Consequences\Settings\RqValueEdge;
+use RqData\OptionalSettings\Consequences\Settings\ReplacementValueOverMaximum;
+use RqData\OptionalSettings\Consequences\Settings\ReplacementValueUnderMaximum;
 
 class Format extends Base {
 
@@ -45,6 +48,22 @@ class Format extends Base {
 		return $this->formedHeader;
 	}
 
+	public function getListOfGeneNames() {
+		return $this->listOfGeneNames;
+	}
+
+	public function getExtendingSettings() {
+		return $this->getInputValues()->getExtendingSettings();
+	}
+
+	public function getFormedData() {
+		return $this->formedData;
+	}
+
+	public function getNameOfCalibrator() {
+		return $this->nameOfCalibrator;
+	}
+
 	/**
 	 * @return InputValues
 	 */
@@ -66,14 +85,13 @@ class Format extends Base {
 		$preformedData = array();
 		$listOfGeneNames = array();
 		$calibratorCandidates = array();
-		$this->parseInputValues($preformedData, $calibratorCandidates, $subjectNamePosition, $geneNamePosition, $ctDataPosition,
-		$rqDataPosition, $columnsPurposeData, $listOfGeneNames);
+		$this->parseInputValues($preformedData, $calibratorCandidates, $subjectNamePosition, $geneNamePosition, $ctDataPosition, $rqDataPosition, $columnsPurposeData, $listOfGeneNames);
 		$orderedListOfGeneNames = $this->orderListOfGeneNames($listOfGeneNames);
 		$nameOfCalibrator = FALSE;
 		if ($this->getInputValues()->getColumnsPurpose()->isRqdataInvolved()) {
 			$nameOfCalibrator = $this->determineCalibratorName($calibratorCandidates);
 		} else {
-			$extendingSettings = $this->getInputValues()->getExtendingSettings();
+			$extendingSettings = $this->getExtendingSettings();
 			$nameOfCalibrator = $extendingSettings['calibrator'];
 			$this->checkUserGivenCalibratorValidity(
 				$nameOfCalibrator,
@@ -86,7 +104,7 @@ class Format extends Base {
 		if (!$this->getInputValues()->getColumnsPurpose()->isRqdataInvolved()) {
 			$this->addRqData($preformedData, $orderedListOfGeneNames);
 		}
-		$formedData = $this->getFormedData($preformedData, $nameOfCalibrator);
+		$formedData = $this->combineFormedData($preformedData, $nameOfCalibrator);
 		if ($this->getErrors()->dejPocetNovychChyb() > 0) {
 			throw new FormatingDataFailedDueToUserMistake;
 		}
@@ -104,14 +122,14 @@ class Format extends Base {
 	}
 
 	protected function parseInputValues(
-		&$preformedData,
-		&$calibratorCandidates,
+		& $preformedData,
+		& $calibratorCandidates,
 		$subjectNamePosition,
 		$geneNamePosition,
 		$ctDataPosition,
 		$rqDataPosition,
 		$columnsPurposeData,
-		$listOfGeneNames
+		& $listOfGeneNames
 	) {
 		foreach ($this->getInputValues()->getInputData() as $rowIndex => $row) {
 			if (!$this->checkSubjectNamePresence($row, $subjectNamePosition, $rowIndex, $columnsPurposeData)
@@ -123,15 +141,15 @@ class Format extends Base {
 				$preformedData[ $row[$subjectNamePosition] ] = array();
 				$calibratorCandidates[ $row[$subjectNamePosition] ] = array('count' => 0);
 			}
-			$currentSubject = &$preformedData[ $row[$subjectNamePosition] ];
-			$currentCalibratorCandidate = &$calibratorCandidates[ $row[$subjectNamePosition] ];
+			$currentSubject = & $preformedData[ $row[$subjectNamePosition] ];
+			$currentCalibratorCandidate = & $calibratorCandidates[ $row[$subjectNamePosition] ];
 			if (!isset($currentSubject[ $row[$geneNamePosition] ])) {
 				$currentSubject[ $row[$geneNamePosition] ] = array();
 			}
 			if (!in_array($row[$geneNamePosition], $listOfGeneNames)) {
 				$listOfGeneNames[] = $row[$geneNamePosition];
 			}
-			$currentGeneData = &$currentSubject[ $row[$geneNamePosition] ];
+			$currentGeneData = & $currentSubject[ $row[$geneNamePosition] ];
 			$duplicitGenesData = array();
 			$this->addCtDataToRow($currentGeneData, $duplicitGenesData, $ctDataPosition, $row, $currentCalibratorCandidate, $rowIndex, $subjectNamePosition, $geneNamePosition,$columnsPurposeData);
 			if ($this->getInputValues()->getColumnsPurpose()->isRqdataInvolved()) {
@@ -156,7 +174,7 @@ class Format extends Base {
 		);
 	}
 
-	protected function addCtDataToRow(&$currentGeneData, &$duplicitGenesData, $ctDataPosition, $row, $currentCalibratorCandidate, $rowIndex, $subjectNamePosition, $geneNamePosition,$columnsPurposeData) {
+	protected function addCtDataToRow(& $currentGeneData, & $duplicitGenesData, $ctDataPosition, $row, $currentCalibratorCandidate, $rowIndex, $subjectNamePosition, $geneNamePosition,$columnsPurposeData) {
 		if (!isset($currentGeneData[ColumnsPurpose::CT_VALUES])) {
 			if (isset($row[$ctDataPosition]) && $row[$ctDataPosition] !== '') {
 				if (self::DISALLOW_MAXIMUM_CT_FOR_CALIBRATOR
@@ -191,7 +209,7 @@ class Format extends Base {
 		}
 	}
 
-	protected function addRqDataToRow(&$currentGeneData, &$duplicitGenesData, $rqDataPosition, $row, $currentCalibratorCandidate, $rowIndex, $subjectNamePosition, $geneNamePosition,$columnsPurposeData) {
+	protected function addRqDataToRow(& $currentGeneData, & $duplicitGenesData, $rqDataPosition, $row, $currentCalibratorCandidate, $rowIndex, $subjectNamePosition, $geneNamePosition,$columnsPurposeData) {
 		if (isset($currentGeneData[ColumnsPurpose::RQ_VALUES])) {
 			if (self::REPORT_DUPLICIT_GENES_DATA) {
 				$duplicitGenesData[] = current($columnsPurposeData[ColumnsPurpose::RQ_VALUES]);
@@ -314,8 +332,8 @@ class Format extends Base {
 				$notInvolvedReferenceGenes[] = $referenceGene;
 			}
 		}
-		if ($notInvolvedReferenceGenes) {
-			foreach ($notInvolvedReferenceGenes as &$notInvolved) {
+		if (count($notInvolvedReferenceGenes) > 0) {
+			foreach ($notInvolvedReferenceGenes as & $notInvolved) {
 				$notInvolved = '"' . $notInvolved . '"';
 			}
 			$this->getErrors()->zapamatujChybu(
@@ -348,9 +366,9 @@ class Format extends Base {
 		return $nameOfCalibrator;
 	}
 
-	private function getFormedData($preformedData, $nameOfCalibrator) {
-		foreach ($preformedData as &$subjectData) {
-			foreach ($subjectData as &$currentGeneData) {
+	private function combineFormedData($preformedData, $nameOfCalibrator) {
+		foreach ($preformedData as & $subjectData) {
+			foreach ($subjectData as & $currentGeneData) {
 				if (self::TRUNCATE_RQ_ON_CT_EMPTINESS
 					&& $currentGeneData[ColumnsPurpose::CT_VALUES] === ''
 				) {
@@ -366,14 +384,15 @@ class Format extends Base {
 						if ($currentGeneData[ColumnsPurpose::CT_VALUES] >=
 							MaximalCtValue::VALUE
 						) {
+							$optionalSettings = $this->getInputValues()->getOptionalSettings();
 							if ($currentGeneData[ColumnsPurpose::RQ_VALUES] <
-								$this->optionalSettings[RqValueEdge::CODE]
+								$optionalSettings[RqValueEdge::CODE]
 							) {
 								$currentGeneData[ColumnsPurpose::RQ_VALUES] =
-									$this->optionalSettings[ReplacementValueUnderMaximum::CODE];
+									$optionalSettings[ReplacementValueUnderMaximum::CODE];
 							} else {
 								$currentGeneData[ColumnsPurpose::RQ_VALUES] =
-									$this->optionalSettings[ReplacementValueOverMaximum::CODE];
+									$optionalSettings[ReplacementValueOverMaximum::CODE];
 							}
 						}
 					}
@@ -429,13 +448,13 @@ class Format extends Base {
 	/**
 	 * Calculate values, needed for later RQ data
 	 *
-	 * @param array &$data
+	 * @param array & $data
 	 * @param string $calibratorName
 	 *
 	 * return void
 	 */
-	private function addRqData(&$data, $listOfGeneNames) {
-		$extendingSettings = $this->getInputValues()->getExtendingSettings();
+	private function addRqData(& $data, $listOfGeneNames) {
+		$extendingSettings = $this->getExtendingSettings();
 		if (!isset($extendingSettings['calibrator'])) {
 			throw new Exception('Undefined by-user-set calibrator');
 		}
@@ -447,7 +466,7 @@ class Format extends Base {
 		$calibratorName = $extendingSettings['calibrator'];
 		$referenceGenes = $extendingSettings['referenceGenes'];
 		$calibratorData = $data[$calibratorName]; //row with selected calibrator data
-		foreach ($data as $subjectName => &$subjectData) {
+		foreach ($data as $subjectName => & $subjectData) {
 			$subjectPreRqData = array();
 			$subjectNormalizingFactorBase = 1;
 			foreach ($listOfGeneNames as $geneName) {

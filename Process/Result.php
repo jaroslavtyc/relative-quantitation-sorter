@@ -3,6 +3,7 @@ namespace RqData\Process;
 
 use RqData\Registry\Errors;
 use RqData\History\FileUtilities;
+use RqData\OptionalSettings\Registry\MeasurementSettings;
 
 class Result extends Base {
 
@@ -55,7 +56,7 @@ class Result extends Base {
 		return $this->resultFilename;
 	}
 
-	protected function saveDataToFile(\HtmlXlsFile $htmlXls, $filename) {
+	protected function saveDataToFile(\universal\Folder\File\Xls\HtmlXlsFile $htmlXls, $filename) {
 		if (!($handle = fopen($filename,'w+'))) {
 			throw new Exception('Nelze založit dočasný soubor pro uložení výsledku');
 		} elseif (!fwrite($handle, $htmlXls->getTable())) {
@@ -108,30 +109,31 @@ class Result extends Base {
 	 * list of [subject name] => each pointing to list of [gene name] =>
 	 * each pointing to list of [(ct value, rq value)] pairs
 	 *
-	 * @return \HtmlXlsFile
+	 * @return \universal\Folder\File\Xls\HtmlXlsFile
 	 */
 	protected function getResultXlsData() {
-		$xls = new \HtmlXlsFile();
+		$xls = new \universal\Folder\File\Xls\HtmlXlsFile();
 		$this->addHeaderToResult($xls);
 		$this->addBodyToResult($xls);
 		$this->addLegend($xls);
 		return $xls;
 	}
 
-	protected function addHeaderToResult(\HtmlXlsFile $xls) {
-		$xls->addRow(new \HtmlXlsRow($this->getHeaderRow()));
+	protected function addHeaderToResult(\universal\Folder\File\Xls\HtmlXlsFile $xls) {
+		$xls->addRow(new \universal\Folder\File\Xls\HtmlXlsRow($this->getHeaderRow()));
 		$xls->moveFirstRowAsHeader();
 	}
 
 	protected function getHeaderRow() {
 		$header = $this->getFormat()->getFormedHeader();
 		$headerRow = array();
-		$nameOfSubjectNameColumn = $header[RqData\RequiredSettings\Options\ColumnsPurpose::SUBJECT_NAME];
-		$nameOfCtDataColumn = $header[RqData\RequiredSettings\Options\ColumnsPurpose::CT_VALUES];
-		$nameOfRqDataColumn = $header[RqData\RequiredSettings\Options\ColumnsPurpose::RQ_VALUES];
+		$nameOfSubjectNameColumn = $header[\RqData\RequiredSettings\Options\ColumnsPurpose::SUBJECT_NAME];
+		$nameOfCtDataColumn = $header[\RqData\RequiredSettings\Options\ColumnsPurpose::CT_VALUES];
+		$nameOfRqDataColumn = $header[\RqData\RequiredSettings\Options\ColumnsPurpose::RQ_VALUES];
 		$headerRow[] = '<b>' . htmlspecialchars($nameOfSubjectNameColumn) . '</b>';
-		foreach ($this->listOfGeneNames as $geneName) {
-			if (in_array($geneName, $this->extendingSettings['referenceGenes'])) {
+		$extendingSettings = $this->getFormat()->getExtendingSettings();
+		foreach ($this->getFormat()->getListOfGeneNames() as $geneName) {
+			if (in_array($geneName, $extendingSettings['referenceGenes'])) {
 				$geneNameRq = sprintf(
 					'<span COLOR="%s">%s</span>',
 					self::REFERENCE_GENE_COLOR,
@@ -152,16 +154,16 @@ class Result extends Base {
 		return $headerRow;
 	}
 
-	protected function addBodyToResult(\HtmlXlsFile $xls) {
-		foreach ($this->formedData as $subjectName => $subjectValues) {
+	protected function addBodyToResult(\universal\Folder\File\Xls\HtmlXlsFile $xls) {
+		foreach ($this->getFormat()->getFormedData() as $subjectName => $subjectValues) {
 			$this->addRowToResultBody($xls, $subjectName, $subjectValues);
 		}
 	}
 
-	protected function addRowToResultBody(\HtmlXlsFile $xls, $subjectName, $subjectValues) {
+	protected function addRowToResultBody(\universal\Folder\File\Xls\HtmlXlsFile $xls, $subjectName, $subjectValues) {
 		$resultRow = array();
 		$resultRow[] = htmlspecialchars($subjectName);
-		foreach ($this->listOfGeneNames as $geneName) {
+		foreach ($this->getFormat()->getListOfGeneNames() as $geneName) {
 			if (isset($subjectValues[$geneName][\RqData\RequiredSettings\Options\ColumnsPurpose::CT_VALUES])) {
 				$resultRow[] = htmlspecialchars($subjectValues[$geneName][\RqData\RequiredSettings\Options\ColumnsPurpose::CT_VALUES]);
 			} else {
@@ -173,36 +175,37 @@ class Result extends Base {
 				$resultRow[] = '';
 			}
 		}
-		$row = new \HtmlXlsRow($resultRow);
-		if ($this->nameOfCalibrator == $subjectName) {
+		$row = new \universal\Folder\File\Xls\HtmlXlsRow($resultRow);
+		if ($this->getFormat()->getNameOfCalibrator() == $subjectName) {
 			$row->setBgcolor(self::CALIBRATOR_BACKGROUND_COLOR);
 		}
 		$xls->addRow($row);
 	}
 
-	protected function addLegend(\HtmlXlsFile $xls) {
-		if (!empty($this->extendingSettings['referenceGenes'])) {
-			$this->addReferenceGenesLegend($xls, $this->extendingSettings['referenceGenes']);
+	protected function addLegend(\universal\Folder\File\Xls\HtmlXlsFile $xls) {
+		$extendingSettings = $this->getFormat()->getExtendingSettings();
+		if (!empty($extendingSettings['referenceGenes'])) {
+			$this->addReferenceGenesLegend($xls, $extendingSettings['referenceGenes']);
 		}
 		if (!empty($this->optionalSettings[MeasurementSettings::CODE])) {
 			$this->addMeasurementSettingsToKeepLegend($xls, $this->optionalSettings[MeasurementSettings::CODE]);
 		}
 	}
 
-	protected function addReferenceGenesLegend(\HtmlXlsFile $xls, $referenceGenes) {
+	protected function addReferenceGenesLegend(\universal\Folder\File\Xls\HtmlXlsFile $xls, $referenceGenes) {
 		$footerData = array();
 		$footerData[] = '<h3>Referenční geny</h3>';
 		$footerData[] = '<ul>';
 		foreach ($referenceGenes as $referenceGene) {
 			$footerData[] = sprintf('<li>%s</li>', htmlspecialchars($referenceGene));
 		}
-		$footerRow = new HtmlXlsRow($footerData);
+		$footerRow = new \universal\Folder\File\Xls\HtmlXlsRow($footerData);
 		$footerRow->setBgcolor(self::LEGEND_BACKGROUND_COLOR);
 		$xls->addRow($footerRow);
 		$xls->moveLastRowAsFooter();
 	}
 
-	protected function addMeasurementSettingsToKeepLegend(\HtmlXlsFile $xls, $settingsToKeep) {
+	protected function addMeasurementSettingsToKeepLegend(\universal\Folder\File\Xls\HtmlXlsFile $xls, $settingsToKeep) {
 		$footerData = array();
 		$possibleMeauserments = array();
 		foreach (new \MeasurementSettings as $possibleMeauserment) {
@@ -212,7 +215,7 @@ class Result extends Base {
 			$footerData[] = '<i>' .	\htmlspecialchars($possibleMeauserments[$code]->humanName) . ': ' . '</i>';
 			$footerData[] = '<i>' .	\htmlspecialchars($meausermentSetting) . '</i>';
 		}
-		$footerRow = new \HtmlXlsRow($footerData);
+		$footerRow = new \universal\Folder\File\Xls\HtmlXlsRow($footerData);
 		$footerRow->setBgcolor(self::LEGEND_BACKGROUND_COLOR);
 		$xls->addRow($footerRow);
 		$xls->moveLastRowAsFooter();
