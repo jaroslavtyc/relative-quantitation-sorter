@@ -18,7 +18,7 @@ class ResultFileDownloader extends Base {
 	}
 
 	protected function offerFileDownload() {
-		\HtmlUtilities::download(
+		\universal\Folder\Utilities\HtmlUtilities::download(
 			$this->getResult()->getFilename(),
 			basename($this->getResult()->getFilename())
 		);
