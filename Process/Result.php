@@ -90,7 +90,7 @@ class Result extends Base {
 	protected function saveResultFileToHistory() {
 		$resultFinalName = $this->getFormat()->getTimeTempnameKey() . '_' . $this->getResultFile()->size . '_' . $this->getResultFile()->name;
 		if (!$this->getResultFile()->copyTo(FileUtilities::getUserResultFileFolderPath(), $resultFinalName)) {
-			$this->errors->zapamatujChybu('Nelze přesunout dočasný soubor s uloženým výsledem pro zachování v historii', 'Výsledný soubor');
+			$this->getErrors()->zapamatujChybu('Nelze přesunout dočasný soubor s uloženým výsledem pro zachování v historii', 'Výsledný soubor');
 			return FALSE;
 		} else {
 			return TRUE;
