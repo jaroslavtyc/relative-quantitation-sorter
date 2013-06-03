@@ -11,8 +11,8 @@ class Result extends Base {
 	const BASE_RESULT_FILENAME = 'rqData';
 	const RESULT_FILENAME_SUFFIX = 'xls';
 	const ADD_DATE_TO_RESULT_FILENAME = TRUE;
-	const LEGEND_BACKGROUND_COLOR = '#0554FF';
-	const CALIBRATOR_BACKGROUND_COLOR = '#FFFF00'; // yellow
+	const LEGEND_BACKGROUND_COLOR = '#2E70FF';
+	const CALIBRATOR_BACKGROUND_COLOR = '#FFFF63';
 	const REFERENCE_GENE_COLOR = '#AFFC00';
 
 	private $format;
@@ -127,23 +127,16 @@ class Result extends Base {
 		$headerRow[] = '<b>' . htmlspecialchars($nameOfSubjectNameColumn) . '</b>';
 		$extendingSettings = $this->getFormat()->getExtendingSettings();
 		foreach ($this->getFormat()->getListOfGeneNames() as $geneName) {
+			$rqStyles = array();
+			$ctStyles = array();
 			if (in_array($geneName, $extendingSettings['referenceGenes'])) {
-				$geneNameRq = sprintf(
-					'<span COLOR="%s">%s</span>',
-					self::REFERENCE_GENE_COLOR,
-					htmlspecialchars($geneName . ' - ' . $nameOfRqDataColumn)
-				);
-				$geneNameCt = sprintf(
-					'<span COLOR="%s">%s</span>',
-					self::REFERENCE_GENE_COLOR,
-					htmlspecialchars($geneName . ' - ' . $nameOfCtDataColumn)
-				);
-			} else {
-				$geneNameRq = htmlspecialchars($geneName . ' - ' . $nameOfRqDataColumn);
-				$geneNameCt = htmlspecialchars($geneName . ' - ' . $nameOfCtDataColumn);
+				$rqStyles[] = sprintf('background-color: %s', self::REFERENCE_GENE_COLOR);
+				$ctStyles[] = sprintf('background-color: %s', self::REFERENCE_GENE_COLOR);
 			}
-			$headerRow[] = '<b>' . $geneNameRq . '</b>';
-			$headerRow[] = '<b>' . $geneNameCt . '</b>';
+			$geneNameRq = htmlspecialchars($geneName . ' - ' . $nameOfRqDataColumn);
+			$geneNameCt = htmlspecialchars($geneName . ' - ' . $nameOfCtDataColumn);
+			$headerRow[] = sprintf('<b style="%s">%s</b>', implode(';', $rqStyles), $geneNameRq);
+			$headerRow[] = sprintf('<b style="%s">%s</b>', implode(';', $ctStyles), $geneNameCt);
 		}
 		return $headerRow;
 	}
@@ -189,9 +182,8 @@ class Result extends Base {
 	protected function addReferenceGenesLegend(\universal\Folder\File\Xls\HtmlXlsFile $xls, $referenceGenes) {
 		$footerData = array();
 		$footerData[] = '<h3>Referenční geny</h3>';
-		$footerData[] = '<ul>';
 		foreach ($referenceGenes as $referenceGene) {
-			$footerData[] = sprintf('<li>%s</li>', htmlspecialchars($referenceGene));
+			$footerData[] = htmlspecialchars($referenceGene);
 		}
 		$footerRow = new \universal\Folder\File\Xls\HtmlXlsRow($footerData);
 		$footerRow->setBgcolor(self::LEGEND_BACKGROUND_COLOR);
