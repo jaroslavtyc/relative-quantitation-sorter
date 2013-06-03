@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "694243d84420e11f9a56ac4a0d84fe25",
+    "hash": "b71f301bd61bd388a25e0349070c4638",
     "packages": [
         {
             "name": "dibi/dibi",
@@ -52,6 +52,58 @@
                 "sqlite"
             ],
             "time": "2013-04-03 12:40:16"
+        },
+        {
+            "name": "mbence/opentbs-bundle",
+            "version": "dev-master",
+            "target-dir": "MBence/OpenTBSBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mbence/OpenTBSBundle.git",
+                "reference": "f665d3311567eb5390b0e6ddd245bac2af7bd23f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mbence/OpenTBSBundle/zipball/f665d3311567eb5390b0e6ddd245bac2af7bd23f",
+                "reference": "f665d3311567eb5390b0e6ddd245bac2af7bd23f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "MBence\\OpenTBSBundle": ""
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bence Meszaros",
+                    "email": "bence@bencemeszaros.com",
+                    "homepage": "http://bencemeszaros.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OpenTBS Bundle for Symfony2 - create OpenOffice and Ms Office documents with Symfony",
+            "homepage": "https://github.com/mbence/OpenTBSBundle",
+            "keywords": [
+                "MS Office",
+                "OpenOffice",
+                "OpenTBS",
+                "TBS",
+                "document",
+                "docx",
+                "odt",
+                "pptx",
+                "symfony",
+                "xlsx"
+            ],
+            "time": "2013-04-05 13:31:53"
         },
         {
             "name": "smarty/smarty",
@@ -158,6 +210,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "mbence/opentbs-bundle": 20,
         "mockery/mockery": 20
     },
     "platform": {

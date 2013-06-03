@@ -21,7 +21,8 @@
 	"require": {
 		"php": ">=5.3.0",
 		"dibi/dibi": "v2.0.3",
-		"smarty/smarty": "v3.1.13"
+		"smarty/smarty": "v3.1.13",
+		"mbence/opentbs-bundle": "dev-master"
 	},
 
 	"require-dev": {
