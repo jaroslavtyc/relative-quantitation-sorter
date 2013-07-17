@@ -52,7 +52,7 @@ class Settings extends Base {
 		if (!$this->getInputSettings()->offsetExists('operation')
 			|| ((string) $this->getInputSettings()->offsetGet('operation') === '')
 		) {
-			$this->getErrors()->zapamatujChybu('chybí','Určení obsahu souboru');
+			$this->getErrors()->rememberError('chybí','Určení obsahu souboru');
 			throw new NoOperationIsChoosen;
 		}
 	}
@@ -110,7 +110,7 @@ class Settings extends Base {
 		} elseif (!$this->getInputSettings()->offsetExists($extendingSetting->code)
 			|| (string) $this->getInputSettings()->offsetGet($extendingSetting->code) === ''
 		) {
-			$this->getErrors()->zapamatujChybu('nevyplněno', $extendingSetting->humanName);
+			$this->getErrors()->rememberError('nevyplněno', $extendingSetting->humanName);
 			throw new UnfilledExtendingSettings($extendingSetting->code);
 		}
 	}
@@ -206,12 +206,12 @@ class Settings extends Base {
 
 	protected function countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence) {
 		if (!isset($optionalSettings[$settingOfConsequence->code])) {
-			$this->getErrors()->zapamatujChybu('Chybí ' . $settingOfConsequence->humanName, \RqData\OptionalSettings\Consequences\MaximalCtValueSettings::HUMAN_NAME);
+			$this->getErrors()->rememberError('Chybí ' . $settingOfConsequence->humanName, \RqData\OptionalSettings\Consequences\MaximalCtValueSettings::HUMAN_NAME);
 			throw new MissingConsequenceForCtMaximumValue($settingOfConsequence->code);
 		} else {
 			$consequenceValue = str_replace(',', '.', $optionalSettings[$settingOfConsequence->code]);
 			if (!preg_match('~^([\d]+([.\d]+)?)?$~', $consequenceValue)) {
-				$this->getErrors()->zapamatujChybu($settingOfConsequence->humanName . ' musí být číslo', 'Chybný formát');
+				$this->getErrors()->rememberError($settingOfConsequence->humanName . ' musí být číslo', 'Chybný formát');
 				throw new WrongFormatOfConsequenceValueForCtMaximumValue(sprintf(
 					'code: [%s], value: [%s]', $settingOfConsequence->code, $consequenceValue)
 				);

@@ -23,10 +23,7 @@
 		"dibi/dibi": "v2.0.3",
 		"smarty/smarty": "v3.1.13",
 		"mbence/opentbs-bundle": "dev-master",
-		"ext-zlib": "*"
-	},
-
-	"require-dev": {
-		"mockery/mockery": "dev-master"
+		"ext-zlib": "*",
+		"nette/nette": "2.0.*"
 	}
 }

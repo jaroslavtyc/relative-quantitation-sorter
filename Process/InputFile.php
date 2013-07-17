@@ -16,12 +16,12 @@ class InputFile extends Base {
 
 	public function process() {
 		if (!$this->getFilesInformations()->offsetExists(FileWithData::FILE_NAME)) {
-			$this->getErrors()->zapamatujChybu('chybí', 'Soubor');
+			$this->getErrors()->rememberError('chybí', 'Soubor');
 			throw new InputFileIsMissing;
 		} else {
 			$fileInfo = $this->getFilesInformations()->offsetGet(FileWithData::FILE_NAME);
 			if ($fileInfo['name'] == '') {
-				$this->getErrors()->zapamatujChybu('chybí', 'Soubor');
+				$this->getErrors()->rememberError('chybí', 'Soubor');
 				throw new InputFileIsMissing;
 			}
 		}

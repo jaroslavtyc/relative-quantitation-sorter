@@ -1,17 +1,22 @@
 <?php
 namespace RqData\RequiredSettings\File;
 
-abstract class ExtendingOptions extends \universal\SingleHtmlOptionModel {
+abstract class ExtendingOptions extends \RqData\RequiredSettings\Settings {
 
 	protected $note;
 
 	public function __construct() {
-		$this->setNote();
-		$this->makePropertyReadable('note');
+		$this->initializeNote();
 		parent::__construct();
 	}
 
-	protected function setNote() {
-		$this->note = FALSE;
+	abstract protected function initializeNote();
+
+	protected function setNote($value) {
+		$this->note = $value;
+	}
+
+	public function getNote() {
+		return $this->note;
 	}
 }

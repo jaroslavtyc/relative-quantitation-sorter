@@ -1,6 +1,4 @@
 <?php
 namespace RqData\Debugging;
 
-class UserException extends Exception {
-
-}
+interface UserException extends Exception {}

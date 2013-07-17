@@ -1,24 +1,24 @@
 <?php
 namespace RqData\History;
 
+use RqData\Core\Object;
 use RqData\Registry\Errors;
+
 /**
  * Reads history files of resource and result aswell, paired resource and result
  * files
  */
-class File extends \universal\BaseClass {
+class File extends Object {
 
 	/**
 	 * List of file names indexed by time of rqdata calling, then by tempname
 	 * (to avoid collision of history files saved by rqdata called simultaneously)
-	 *
-	 * @var array
 	 */
 	protected $listOfFiles;
 	private $errors;
 
-	public function __construct() {
-		$this->makePropertyReadable('listOfFiles');
+	public function __construct(Errors $errors) {
+		$this->errors = $errors;
 	}
 
 	public function getListOfFiles() {
@@ -33,14 +33,14 @@ class File extends \universal\BaseClass {
 		$this->listOfFiles = array();
 		$unorderedFilenames = array('resource'=>array(), 'result'=>array());
 		if (!file_exists(FileUtilities::getUserResourceFileFolderPath())) {
-			$this->getErrors()->zapamatujChybu('neexistuje','Adresář s historickými zdrojovými soubory');
+			$this->getErrors()->rememberError('neexistuje','Adresář s historickými zdrojovými soubory');
 		} else {
 			$unorderedFilenames['resource'] = FolderUtilities::getFilesFromDir(
 				FileUtilities::getUserResourceFileFolderPath());
 		}
 
 		if (!file_exists(FileUtilities::getUserResultFileFolderPath())) {
-			$this->getErrors()->zapamatujChybu('neexistuje','Adresář s historickými výslednými soubory');
+			$this->getErrors()->rememberError('neexistuje','Adresář s historickými výslednými soubory');
 		} else {
 			$unorderedFilenames['result'] = FolderUtilities::getFilesFromDir(
 				FileUtilities::getUserResultFileFolderPath());
@@ -49,7 +49,7 @@ class File extends \universal\BaseClass {
 		foreach($unorderedFilenames as $type=>$baseFilenames) {
 			foreach ($baseFilenames as $baseFilename) {
 				if (!preg_match('~^(\d+)_([^_]+)_(\d+)_(.+)$~', $baseFilename, $fileInfo)) {
-					$this->getErrors()->zapamatujChybu('soubor  ' . $fileInfo . 'nesplňuje požadavky na název','Chybný formát názvu');
+					$this->getErrors()->rememberError('soubor  ' . $fileInfo . 'nesplňuje požadavky na název','Chybný formát názvu');
 					continue;
 				}
 
@@ -76,9 +76,6 @@ class File extends \universal\BaseClass {
 	 * @return Errors
 	 */
 	protected function getErrors() {
-		if (!isset($this->errors)) {
-			$this->errors = Errors::get();
-		}
 		return $this->errors;
 	}
 }

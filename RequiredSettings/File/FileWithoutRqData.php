@@ -11,10 +11,10 @@ class FileWithoutRqData extends FileWithData {
 		parent::__construct(self::SUBJECT_NAME + self::GENE_NAMES + self::CT_VALUES);
 	}
 
-	protected function setListOfExtendingSettings() {
-		$this->listOfExtendingSettings = array(
+	protected function initializeListOfExtendingSettings() {
+		$this->setListOfExtendedSettings(array(
 			 new \RqData\RequiredSettings\File\Calibrator,
 			 new \RqData\RequiredSettings\File\ReferenceGenes,
-		);
+		));
 	}
 }

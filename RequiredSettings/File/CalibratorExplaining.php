@@ -1,7 +1,7 @@
 <?php
 namespace RqData\RequiredSettings\File;
 
-class CalibratorExplaining extends \universal\SingleHtmlOptionModel {
+class CalibratorExplaining extends \RqData\RequiredSettings\Settings {
 
 	const HUMAN_NAME = 'název subjektu';
 	const VALUE = '';

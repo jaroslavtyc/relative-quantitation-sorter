@@ -3,34 +3,47 @@ namespace RqData\Registry;
 
 class FormStateKeeper extends \universal\BaseClass {
 
+	private $session;
+
 	public function __construct() {
-		\universal\Registry\Session::ensure();
+		$this->session = new Session();
 	}
 
 	public function holdFormStates(array $formStates) {
-		if (!isset($_SESSION[$this->getSessionIndex()])) {
-			$_SESSION[$this->getSessionIndex()] = array();
+		if (!$this->getSession()->isValueSet($this->getSessionIndex())) {
+			$this->getSession()->setValue($this->getSessionIndex(), $formStates);
+		} else {
+			$this->getSession()->setValue(
+				$this->getSessionIndex(),
+				array_merge($this->getSession()->getValue($this->getSessionIndex()), $formStates)
+			);
 		}
-		$_SESSION[$this->getSessionIndex()] = array_merge(
-			$_SESSION[ $this->getSessionIndex() ],
-			$formStates
-		);
+	}
+
+	/**
+	 * @return Session
+	 */
+	private function getSession() {
+		return $this->session;
 	}
 
 	public function getHeldFormStates() {
-		if (!isset($_SESSION[$this->getSessionIndex()])) {
+		if (!$this->getSession()->isValueSet($this->getSessionIndex())) {
 			return array();
 		} else {
-			return $_SESSION[$this->getSessionIndex()];
+			return $this->getSession()->getValue($this->getSessionIndex());
 		}
 	}
 
 	public function resolveValue($itemName, $defaultValue = '') {
 		if (!array_key_exists($itemName, $this->getHeldFormStates())) {
-			return $defaultValue;
+			$value = $defaultValue;
+		} else {
+			$heldFormStates = $this->getHeldFormStates();
+			$value = $heldFormStates[$itemName];
 		}
-		$heldFormStates = $this->getHeldFormStates();
-		return $heldFormStates[$itemName];
+
+		return $value;
 	}
 
 	public function resolveArrayValue($arrayName, $itemName, $defaultValue = '') {
@@ -41,6 +54,7 @@ class FormStateKeeper extends \universal\BaseClass {
 				$valueToReturn = $heldFormStates[$arrayName][$itemName];
 			}
 		}
+		
 		return $valueToReturn;
 	}
 

@@ -91,7 +91,7 @@ class InputValues extends Base {
 				\RqData\History\FileUtilities::getUserResourceFileFolderPath(),
 				$this->timeTempnameKey . '_' . $this->getInputFile()->getUploadedFile()->size . '_' . $this->getInputFile()->getUploadedFile()->name
 			)) {
-				$this->getErrors()->zapamatujChybu('Nezdařilo se uložit nahraný soubor', 'Historie');
+				$this->getErrors()->rememberError('Nezdařilo se uložit nahraný soubor', 'Historie');
 
 				return FALSE;
 			}
@@ -103,19 +103,19 @@ class InputValues extends Base {
 	private function inputValuesSetRawData() {
 		$this->inputData = $this->getInputFile()->getUploadedFile()->getContentArray();
 		if (!$this->inputData) {
-			$this->getErrors()->zapamatujChybu('je prázdný', 'Soubor');
+			$this->getErrors()->rememberError('je prázdný', 'Soubor');
 			throw new InputFileIsEmpty;
 		}
 	}
 
 	private function separateHeader() {
-		if (sizeof($this->inputData) == 0) {
+		if (count($this->inputData) == 0) {
 			throw new Exception('Raw data are empty');
 		}
 		if (self::FIRST_ROW_CONTAINS_HEADER) {
 			//first row should contains header description
 			reset($this->inputData);
-			if (sizeof(current($this->inputData)) !=
+			if (count(current($this->inputData)) !=
 					  $this->getColumnsPurpose()->getNumberOfColumns()) {
 				throw new Exception('Invalid header row format');
 			}
@@ -132,18 +132,18 @@ class InputValues extends Base {
 				continue;
 			}
 			$row = explode("\t", $row); //split row to items
-			if (sizeof($row) < $numberOfColumns) {
-				$this->getErrors()->zapamatujChybu(sprintf(
-									 'chybný (%s)', (sizeof($row) > 1) ? sprintf('málo sloupců (%d) na řádku %d, požadováno %d', sizeof($row), $rowIndex + 1, $numberOfColumns) : 'nenalezen oddělovač tabulátor'
+			if (count($row) < $numberOfColumns) {
+				$this->getErrors()->rememberError(sprintf(
+									 'chybný (%s)', (count($row) > 1) ? sprintf('málo sloupců (%d) na řádku %d, požadováno %d', count($row), $rowIndex + 1, $numberOfColumns) : 'nenalezen oddělovač tabulátor'
 						  ), 'Formát souboru'
 				);
 				throw new WrongInputFileFormat;
 			}
-			if (sizeof($row) > $numberOfColumns) { //if number of given row parts
+			if (count($row) > $numberOfColumns) { //if number of given row parts
 				// is greater then required
 				foreach ($row as $tierOfItem => $item) {
 					if ($tierOfItem >= ColumnsPurpose::getNumberOfPossibleColumns() && trim($item) !== '') {
-						$this->getErrors()->zapamatujChybu(sprintf(
+						$this->getErrors()->rememberError(sprintf(
 											 'chybný; na řádku %d zjištěno příliš mnoho sloupců', $rowIndex
 								  ), 'Formát souboru'
 						);

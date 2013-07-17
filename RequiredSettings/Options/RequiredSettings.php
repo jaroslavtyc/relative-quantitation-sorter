@@ -2,9 +2,8 @@
 namespace RqData\RequiredSettings\Options;
 /**
  * Base for classes with options of work types and input file content
- *
  */
-abstract class RequiredSettings extends \universal\HtmlInputModel {
+abstract class RequiredSettings extends \RqData\Core\Iterable {
 
 	const SUBJECT_NAME = 1; //b1
 	const GENE_NAMES = 2; //b10
@@ -14,28 +13,19 @@ abstract class RequiredSettings extends \universal\HtmlInputModel {
 
 	/**
 	 * List of extending settings, required toghether with actual main setting
-	 *
-	 * @var array
 	 */
 	protected $dependentSettings;
 
-	/**
-	 *
-	 * @param array $data
-	 * @param array $dependentSettings
-	 */
 	public function __construct(array $data, array $dependentSettings = array()){
 		parent::__construct($data);
 		$this->setDependentSettings($dependentSettings);
-		$this->makePropertyReadable('dependentSettings');
 	}
 
-	/**
-	 * Setter for list of extending, required settings
-	 *
-	 * @param array $dependentSettings
-	 */
 	private function setDependentSettings(array $dependentSettings) {
 		$this->dependentSettings = $dependentSettings;
+	}
+
+	public function getDependentSettings() {
+		return $this->dependentSettings;
 	}
 }

@@ -6,7 +6,6 @@ use RqData\RequiredSettings\File\FileWithoutRqData;
 
 /**
  * Keeper of work / file types
- *
  */
 class OperationList extends RequiredSettings {
 
@@ -14,15 +13,10 @@ class OperationList extends RequiredSettings {
 	const CODE = 'operationType';
 	const VALUE = '';
 
-	/**
-	 * List of available operations, indexed by integer-binary keys
-	 *
-	 * @var array
-	 */
 	private $operationList;
 
 	public function __construct() {
-		$this->setOperationList();
+		$this->initializeOperationList();
 		parent::__construct($this->operationList);
 	}
 
@@ -53,12 +47,12 @@ class OperationList extends RequiredSettings {
 	/**
 	 * Sets types of available operations
 	 */
-	private function setOperationList() {
+	private function initializeOperationList() {
 		$fileWithRqData = new FileWithRqData();
 		$fileWithoutRqData = new FileWithoutRqData();
 		$this->operationList = array(
-			$fileWithRqData->optionMask => $fileWithRqData
-			,$fileWithoutRqData->optionMask => $fileWithoutRqData
+			$fileWithRqData->optionMask => $fileWithRqData,
+			$fileWithoutRqData->optionMask => $fileWithoutRqData
 		);
 	}
 }

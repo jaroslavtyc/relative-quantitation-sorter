@@ -105,7 +105,7 @@ class Format extends Base {
 			$this->addRqData($preformedData, $orderedListOfGeneNames);
 		}
 		$formedData = $this->combineFormedData($preformedData, $nameOfCalibrator);
-		if ($this->getErrors()->dejPocetNovychChyb() > 0) {
+		if ($this->getErrors()->getAmountOfNewErrors() > 0) {
 			throw new FormatingDataFailedDueToUserMistake;
 		}
 		$this->formedData = $formedData;
@@ -155,14 +155,14 @@ class Format extends Base {
 			if ($this->getInputValues()->getColumnsPurpose()->isRqdataInvolved()) {
 				$this->addRqDataToRow($currentGeneData, $duplicitGenesData, $rqDataPosition, $row, $currentCalibratorCandidate, $rowIndex, $subjectNamePosition, $geneNamePosition,$columnsPurposeData);
 			}
-			if (self::REPORT_DUPLICIT_GENES_DATA && sizeof($duplicitGenesData) > 0) {
+			if (self::REPORT_DUPLICIT_GENES_DATA && count($duplicitGenesData) > 0) {
 				$this->handleDuplicitGenesData($duplicitGenesData);
 			}
 		}
 	}
 
 	protected function handleDuplicitGenesData($duplicitGenesData, $rowIndex, $row, $subjectNamePosition, $geneNamePosition) {
-		$this->getErrors()->zapamatujChybu(
+		$this->getErrors()->rememberError(
 			sprintf(
 				'Na řádku %d je duplicitní informace %s pro subjekt %s a gen %s',
 				($rowIndex +1),
@@ -192,7 +192,7 @@ class Format extends Base {
 			} else {
 				$currentGeneData[ColumnsPurpose::CT_VALUES] = '';
 				if (self::REPORT_MISSING_GENES_DATA) {
-					$this->getErrors()->zapamatujChybu(
+					$this->getErrors()->rememberError(
 						sprintf(
 							'Na řádku %d chybí informace %s pro subjekt %s a gen %s',
 							($rowIndex +1),
@@ -225,7 +225,7 @@ class Format extends Base {
 			} else {
 				$currentGeneData[ColumnsPurpose::RQ_VALUES] = '';
 				if (self::REPORT_MISSING_GENES_DATA) {
-					$this->getErrors()->zapamatujChybu(
+					$this->getErrors()->rememberError(
 						sprintf(
 							'Na řádku %d chybí informace %s pro subjekt %s a gen %s',
 							($rowIndex +1),
@@ -243,7 +243,7 @@ class Format extends Base {
 	protected function checkSubjectNamePresence($row, $subjectNamePosition, $rowIndex, $columnsPurposeData) {
 		$result = TRUE;
 		if (!isset($row[$subjectNamePosition])) {
-			$this->getErrors()->zapamatujChybu(
+			$this->getErrors()->rememberError(
 				sprintf('Na řádku %d chybí informace %s', ($rowIndex +1), current($columnsPurposeData[ColumnsPurpose::SUBJECT_NAME])),
 				'Formát'
 			);
@@ -255,7 +255,7 @@ class Format extends Base {
 	protected function checkGeneNamePresence($row, $geneNamePosition, $rowIndex, $columnsPurposeData) {
 		$result = TRUE;
 		if (!isset($row[$geneNamePosition])) {
-			$this->getErrors()->zapamatujChybu(
+			$this->getErrors()->rememberError(
 				sprintf('Na řádku %d chybí informace %s', ($rowIndex +1), current($columnsPurposeData[ColumnsPurpose::GENE_NAMES])),
 				'Formát'
 			);
@@ -320,7 +320,7 @@ class Format extends Base {
 	) {
 		$invalid = FALSE;
 		if (!array_key_exists($nameOfUserDefinedCalibrator, $preformedData)) {
-			$this->getErrors()->zapamatujChybu(
+			$this->getErrors()->rememberError(
 				sprintf('s názvem "%s" není zastoupen', $nameOfUserDefinedCalibrator),
 				\RqData\RequiredSettings\File\Calibrator::HUMAN_NAME
 			);
@@ -336,7 +336,7 @@ class Format extends Base {
 			foreach ($notInvolvedReferenceGenes as & $notInvolved) {
 				$notInvolved = '"' . $notInvolved . '"';
 			}
-			$this->getErrors()->zapamatujChybu(
+			$this->getErrors()->rememberError(
 				sprintf('ve zdrojovém souboru chybí %s', implode(', ', $notInvolvedReferenceGenes)),
 				\RqData\RequiredSettings\File\ReferenceGenes::HUMAN_NAME
 			);
@@ -429,7 +429,7 @@ class Format extends Base {
 		if (self::DISALLOW_MAXIMUM_CT_FOR_CALIBRATOR && $nameOfCalibrator !== FALSE) {
 			if (!empty($calibratorCandidates[$nameOfCalibrator]['maximum_reached'])) {
 				$maximum = $calibratorCandidates[$nameOfCalibrator]['maximum_reached'];
-				$this->getErrors()->zapamatujChybu(
+				$this->getErrors()->rememberError(
 					sprintf(
 						'Hodnota Ct kalibrátoru "%s" dosáhla nepovolené hodnoty %s pro detektor "%s" na řádku %d',
 						$nameOfCalibrator,
@@ -472,7 +472,7 @@ class Format extends Base {
 			foreach ($listOfGeneNames as $geneName) {
 				$subjectPreRqData[$subjectName][$geneName] = array();
 				if (!isset($calibratorData[$geneName])) {
-					$this->getErrors()->zapamatujChybu(
+					$this->getErrors()->rememberError(
 						'chybí informace o genu ' . $geneName,
 						\RqData\RequiredSettings\File\Calibrator::HUMAN_NAME
 					);
@@ -498,7 +498,7 @@ class Format extends Base {
 
 			$subjectNormalizingFactor = pow(
 				$subjectNormalizingFactorBase,
-				1/sizeof($referenceGenes)
+				1/count($referenceGenes)
 			);
 			foreach ($listOfGeneNames as $geneName) {
 				$subjectData[$geneName][ColumnsPurpose::RQ_VALUES] =

@@ -185,7 +185,7 @@ class Errors {
 			if (($returnMethod === self::ANY_RETURN_METHOD) or ($searchedReturnMethod == $currentReturnMethod)) {
 				foreach($singleMethodErrors as $index => $errorOrGroup) {
 					if (is_string($index) && is_array($errorOrGroup)) {
-						$amount += sizeof($errorOrGroup);
+						$amount += count($errorOrGroup);
 					} else {
 						$amount++;
 					}
@@ -201,7 +201,7 @@ class Errors {
 	}
 
 	public function forgotErrors() {
-		if($this->getSession()->isSetValue($this->projectName)) {
+		if($this->getSession()->isValueSet($this->projectName)) {
 			$this->getSession()->unsetValue($this->projectName);
 		}
 
@@ -246,7 +246,7 @@ class Errors {
 					break;
 				case self::SESSION_RETURN_METHOD:
 					$session = $this->getSession();
-					if ($session->isSetValue($this->projectName)) {
+					if ($session->isValueSet($this->projectName)) {
 						$this->oldErrors[$workingMethodName] = $session->getValue($this->projectName);
 					}else{
 						$this->oldErrors[$workingMethodName] = array();
