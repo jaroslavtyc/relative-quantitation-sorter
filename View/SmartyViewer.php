@@ -12,20 +12,13 @@ abstract class SmartyViewer extends Object implements Viewer {
 	}
 
 	public function display() {
-		$this->setUpWorker();
-		$this->render();
-	}
-
-	abstract protected function setUpWorker();
-
-	protected function render() {
-		echo $this->getWorker()->fetch();
+		echo $this->getFetcher()->fetch();
 	}
 
 	/**
 	 * @return Fetcher
 	 */
-	protected function getWorker() {
+	protected function getFetcher() {
 		return $this->fetcher;
 	}
 }

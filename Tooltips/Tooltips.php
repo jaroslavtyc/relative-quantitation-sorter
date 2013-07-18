@@ -1,5 +1,6 @@
 <?php
 namespace RqData\Tooltips;
+use RqData\View\SmartyFetcher;
 
 class Tooltips {
 
@@ -26,7 +27,7 @@ class Tooltips {
 	protected function createTooltip($name) {
 		switch ($name) {
 			case 'inputFileFormat' :
-				return new InputFileTooltip();
+				return new InputFileTooltip(new SmartyFetcher(new \Smarty, 'inputFileTooltip.tpl'));
 			default:
 				throw new UnkownTooltipNameException($name);
 		}

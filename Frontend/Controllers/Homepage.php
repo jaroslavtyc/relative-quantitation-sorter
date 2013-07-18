@@ -16,16 +16,16 @@ class Homepage extends DisplayWithErrorMessages {
 	}
 
 	protected function render() {
-		$this->getWorker()->display('index.tpl');
+		$this->getFetcher()->display('index.tpl');
 	}
 
 	protected function setUpValuesToView() {
-		$this->getWorker()->assign('formStatesHistory', $this->getFormStateHolder());
-		$this->getWorker()->assign('operationList', $this->getOperationList());
-		$this->getWorker()->assign('consequence', $this->getConsequence());
-		$this->getWorker()->assign('measurementSettings', $this->getMeasurements());
-		$this->getWorker()->assign('inputFileName', FileWithData::FILE_NAME);
-		$this->getWorker()->assign(
+		$this->getFetcher()->assign('formStatesHistory', $this->getFormStateHolder());
+		$this->getFetcher()->assign('operationList', $this->getOperationList());
+		$this->getFetcher()->assign('consequence', $this->getConsequence());
+		$this->getFetcher()->assign('measurementSettings', $this->getMeasurements());
+		$this->getFetcher()->assign('inputFileName', FileWithData::FILE_NAME);
+		$this->getFetcher()->assign(
 			'measurementSettingsRegistry',
 			array(
 				'code' => MeasurementSettings::CODE,
@@ -35,12 +35,12 @@ class Homepage extends DisplayWithErrorMessages {
 	}
 
 	protected function setUpTemplatesToView() {
-		$this->getWorker()->assign('css', array('main.css', 'opentip.css', 'homepage.css'));
-		$this->getWorker()->assign(
+		$this->getFetcher()->assign('css', array('main.css', 'opentip.css', 'homepage.css'));
+		$this->getFetcher()->assign(
 			'headerJs',
 			array('libraries/jquery.js', 'libraries/jquery.formautofill.min.js', 'libraries/opentip-jquery.min.js')
 		);
-		$this->getWorker()->assign(
+		$this->getFetcher()->assign(
 			'footerJs',
 			array('homepage.js', 'display_trigger.js')
 		);

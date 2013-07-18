@@ -11,6 +11,7 @@ abstract class DisplayWithErrorMessages extends SmartyViewer {
 	private $errors;
 
 	public function display() {
+		$this->setUpFetcher();
 		parent::display();
 		$this->getErrors()->forgotErrors();
 	}
@@ -25,10 +26,10 @@ abstract class DisplayWithErrorMessages extends SmartyViewer {
 		return $this->errors;
 	}
 
-	protected function setUpWorker() {
-		$this->getWorker()->assign('errors', $this->getErrorMessages());
-		$this->getWorker()->assign('errorsCount', $this->getCountOfErrors());
-		$this->getWorker()->assign('errorsAnchorName', self::ERROR_ANCHOR_NAME);
+	protected function setUpFetcher() {
+		$this->getFetcher()->assign('errors', $this->getErrorMessages());
+		$this->getFetcher()->assign('errorsCount', $this->getCountOfErrors());
+		$this->getFetcher()->assign('errorsAnchorName', self::ERROR_ANCHOR_NAME);
 	}
 
 	protected function getErrorMessages() {

@@ -3,7 +3,7 @@ namespace RqData\View;
 
 use RqData\Core\Object;
 
-abstract class SmartyFetcher extends Object implements Fetcher {
+class SmartyFetcher extends Object implements Fetcher {
 
 	private $smarty;
 	private $template;
@@ -14,25 +14,17 @@ abstract class SmartyFetcher extends Object implements Fetcher {
 	}
 
 	public function assign($name, $value) {
-		$this->getWorker()->assign($name, $value);
+		$this->getFetcher()->assign($name, $value);
 	}
 
 	public function fetch() {
-		$this->setUpWorker();
-
-		return $this->render();
-	}
-
-	abstract protected function setUpWorker();
-
-	protected function render() {
-		return $this->getWorker()->fetch($this->getTemplate());
+		return $this->getFetcher()->fetch($this->getTemplate());
 	}
 
 	/**
 	 * @return \Smarty
 	 */
-	protected function getWorker() {
+	protected function getFetcher() {
 		return $this->smarty;
 	}
 
