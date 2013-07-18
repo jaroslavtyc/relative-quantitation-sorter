@@ -1,6 +1,6 @@
 <?php
 namespace RqData\RequiredSettings\Options\Exceptions;
 
-use RqData\Debugging\SystemException;
+use RqData\Debugging\CoreException;
 
-class OptionMaskIsNotNumeric extends \InvalidArgumentException implements SystemException {}
+class OptionMaskIsNotNumeric extends \InvalidArgumentException implements CoreException {}

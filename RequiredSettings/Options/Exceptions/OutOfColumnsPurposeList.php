@@ -1,6 +1,6 @@
 <?php
 namespace RqData\RequiredSettings\Options\Exceptions;
 
-use RqData\Debugging\SystemException;
+use RqData\Debugging\CoreException;
 
-class OutOfColumnsPurposeList extends \OutOfBoundsException implements SystemException {}
+class OutOfColumnsPurposeList extends \OutOfBoundsException implements CoreException {}

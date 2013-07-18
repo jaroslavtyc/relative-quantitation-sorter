@@ -1,4 +1,4 @@
 <?php
 namespace RqData\Debugging;
 
-interface SystemException extends Exception {}
+interface CoreException extends Exception {}

@@ -1,6 +1,6 @@
 <?php
 namespace RqData\Core\Exceptions;
 
-use RqData\Debugging\SystemException;
+use RqData\Debugging\CoreException;
 
-class AccessException extends \OutOfBoundsException implements SystemException {}
+class AccessException extends \OutOfBoundsException implements CoreException {}
