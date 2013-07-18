@@ -23,8 +23,8 @@ class TextMerger {
 		$this->getTinyButStrong()->LoadTemplate($file);
 	}
 
-	public function mergeBlock($name, \ArrayAccess $values) {
-		$this->getTinyButStrong()->MergeBlock($name, (array) $values);
+	public function mergeBlock($name, array $values) {
+		$this->getTinyButStrong()->MergeBlock($name, $values);
 	}
 
 	public function getResult() {
