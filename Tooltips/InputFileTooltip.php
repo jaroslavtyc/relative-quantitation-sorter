@@ -13,14 +13,16 @@ class InputFileTooltip implements Tooltip {
 	}
 
 	public function getMessage() {
-		$this->getFetcher();
-		$smarty = \universal\View\Smarty::get(FALSE);
-		$smarty->assign('columnsPurpose', $this->getColumnsPurpose());
-		return $smarty->fetch('inputFileTooltip.tpl');
+		$this->getFetcher()->assign('columnsPurpose', $this->getColumnsPurpose());
+
+		return $this->getFetcher()->fetch();
 	}
 
+	/**
+	 * @return Fetcher
+	 */
 	protected function getFetcher() {
-		
+		return $this->fetcher;
 	}
 
 	protected function getColumnsPurpose() {
