@@ -12,10 +12,6 @@ class MaximalCtValueSettings extends RqData\Core\Object {
 	protected $rqValueEdge;
 
 	public function __construct() {
-		$this->setSettings();
-	}
-
-	protected function setSettings() {
 		$this->maximalCtValue = new Settings\MaximalCtValue;
 		$this->replacementValueUnderMaximum = new Settings\ReplacementValueUnderMaximum;
 		$this->replacementValueOverMaximum = new Settings\ReplacementValueOverMaximum;
