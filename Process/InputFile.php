@@ -3,6 +3,7 @@ namespace RqData\Process;
 
 use RqData\Registry\Errors;
 use RqData\RequiredSettings\File\FileWithData;
+use RqData\Process\Exceptions\InputFileIsMissing;
 
 class InputFile extends Base {
 

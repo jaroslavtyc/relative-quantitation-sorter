@@ -7,6 +7,11 @@ use RqData\OptionalSettings\Consequences\Settings\MaximalCtValue;
 use RqData\OptionalSettings\Consequences\Settings\RqValueEdge;
 use RqData\OptionalSettings\Consequences\Settings\ReplacementValueOverMaximum;
 use RqData\OptionalSettings\Consequences\Settings\ReplacementValueUnderMaximum;
+use RqData\Process\Exceptions\UndefinedCalibrator;
+use RqData\Process\Exceptions\UndefinedReferenceGenes;
+use RqData\Process\Exceptions\GivenCalibratorIsNotValid;
+use RqData\Process\Exceptions\CalibratorMaximumCtValueOverflow;
+use RqData\Process\Exceptions\FormatingDataFailedDueToUserMistake;
 
 class Format extends Base {
 
@@ -343,7 +348,7 @@ class Format extends Base {
 			$invalid = TRUE;
 		}
 		if ($invalid) {
-			throw new ByUserGivenCalibratorIsNotValid;
+			throw new GivenCalibratorIsNotValid;
 		}
 	}
 
@@ -456,11 +461,11 @@ class Format extends Base {
 	private function addRqData(& $data, $listOfGeneNames) {
 		$extendingSettings = $this->getExtendingSettings();
 		if (!isset($extendingSettings['calibrator'])) {
-			throw new Exception('Undefined by-user-set calibrator');
+			throw new UndefinedCalibrator('Undefined by-user-set calibrator');
 		}
 
 		if (empty($extendingSettings['referenceGenes'])) {
-			throw new Exception('Undefined by-user-set reference genes');
+			throw new UndefinedReferenceGenes('Undefined by-user-set reference genes');
 		}
 
 		$calibratorName = $extendingSettings['calibrator'];
@@ -507,7 +512,3 @@ class Format extends Base {
 		}
 	}
 }
-
-class ByUserGivenCalibratorIsNotValid extends \RqData\Debugging\UserException {}
-class CalibratorMaximumCtValueOverflow extends \RqData\Debugging\UserException {}
-class FormatingDataFailedDueToUserMistake extends \RqData\Debugging\UserException {}

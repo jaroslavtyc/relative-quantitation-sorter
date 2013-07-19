@@ -3,6 +3,7 @@ namespace RqData\History;
 
 use RqData\Core\Object;
 use RqData\Registry\Errors;
+use RqData\History\Exceptions\DuplicitStructure;
 
 /**
  * Reads history files of resource and result aswell, paired resource and result
@@ -32,23 +33,22 @@ class File extends Object {
 	protected function setListOfFiles() {
 		$this->listOfFiles = array();
 		$unorderedFilenames = array('resource'=>array(), 'result'=>array());
-		if (!file_exists(FileUtilities::getUserResourceFileFolderPath())) {
+		if (!\file_exists(FileUtilities::getUserResourceFileFolderPath())) {
 			$this->getErrors()->rememberError('neexistuje','Adresář s historickými zdrojovými soubory');
 		} else {
-			$unorderedFilenames['resource'] = FolderUtilities::getFilesFromDir(
-				FileUtilities::getUserResourceFileFolderPath());
+			$unorderedFilenames['resource'] = FolderUtilities::getFilesFromDir(FileUtilities::getUserResourceFileFolderPath());
 		}
 
-		if (!file_exists(FileUtilities::getUserResultFileFolderPath())) {
+		if (!\file_exists(FileUtilities::getUserResultFileFolderPath())) {
 			$this->getErrors()->rememberError('neexistuje','Adresář s historickými výslednými soubory');
 		} else {
-			$unorderedFilenames['result'] = FolderUtilities::getFilesFromDir(
-				FileUtilities::getUserResultFileFolderPath());
+			$unorderedFilenames['result'] = FolderUtilities::getFilesFromDir(FileUtilities::getUserResultFileFolderPath());
 		}
 
 		foreach($unorderedFilenames as $type=>$baseFilenames) {
 			foreach ($baseFilenames as $baseFilename) {
-				if (!preg_match('~^(\d+)_([^_]+)_(\d+)_(.+)$~', $baseFilename, $fileInfo)) {
+				$fileInfo = array();
+				if (!\preg_match('~^(\d+)_([^_]+)_(\d+)_(.+)$~', $baseFilename, $fileInfo)) {
 					$this->getErrors()->rememberError('soubor  ' . $fileInfo . 'nesplňuje požadavky na název','Chybný formát názvu');
 					continue;
 				}
@@ -64,12 +64,12 @@ class File extends Object {
 				if (!isset($sameTimeTempname[$type])) {
 					$sameTimeTempname[$type] = array('name' => $fileInfo[4], 'size' => $fileInfo[3]);
 				} else {
-					throw new Exception('Duplicit structure of history file name "' . $baseFilename . '" of type ' . $type, E_USER_ERROR);
+					throw new DuplicitStructure(sprintf('History file name [%s] of type [%s].', $baseFilename, $type));
 				}
 			}
 		}
 
-		krsort($this->listOfFiles);
+		\krsort($this->listOfFiles);
 	}
 
 	/**

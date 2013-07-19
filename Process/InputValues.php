@@ -2,8 +2,10 @@
 namespace RqData\Process;
 
 use RqData\Registry\Errors;
-use \RqData\Process\Settings;
+use RqData\Process\Settings;
 use RqData\RequiredSettings\File\FileWithData;
+use RqData\Process\Exceptions\EmptyInputFile;
+use RqData\Process\Exceptions\WrongInputFileFormat;
 
 class InputValues extends Base {
 
@@ -104,7 +106,7 @@ class InputValues extends Base {
 		$this->inputData = $this->getInputFile()->getUploadedFile()->getContentArray();
 		if (!$this->inputData) {
 			$this->getErrors()->rememberError('je prázdný', 'Soubor');
-			throw new InputFileIsEmpty;
+			throw new EmptyInputFile;
 		}
 	}
 
@@ -177,16 +179,4 @@ class InputValues extends Base {
 	private function setTimeTempnameKey() {
 		$this->timeTempnameKey = time() . '_' .  str_replace('_', '', $this->getInputFile()->getUploadedFile()->tmpFilename);
 	}
-}
-
-class InputFileIsMissing extends \RqData\Debugging\UserException {
-
-}
-
-class InputFileIsEmpty extends \RqData\Debugging\UserException {
-
-}
-
-class WrongInputFileFormat extends \RqData\Debugging\UserException {
-
 }

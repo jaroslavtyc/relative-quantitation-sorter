@@ -1,6 +1,5 @@
 <?php
 namespace RqData\Core\Exceptions;
+use RqData\Debugging\Exceptions\Core;
 
-use RqData\Debugging\CoreException;
-
-class AccessException extends \OutOfBoundsException implements CoreException {}
+class Access extends \OutOfBounds implements Core {}

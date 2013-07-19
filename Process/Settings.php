@@ -53,13 +53,13 @@ class Settings extends Base {
 			|| ((string) $this->getInputSettings()->offsetGet('operation') === '')
 		) {
 			$this->getErrors()->rememberError('chybí','Určení obsahu souboru');
-			throw new NoOperationIsChoosen;
+			throw new \RqData\Process\Exceptions\NoOperationIsChoosen;
 		}
 	}
 
 	protected function checkChoosenOperation() {
 		if (!$this->getOperationList()->isOperation($this->getInputSettings()->offsetGet('operation'))) {
-			throw new UnknownChoosenOperationCode($this->getInputSettings()->offsetGet('operation'));
+			throw new \RqData\Process\Exceptions\UnknownChoosenOperationCode($this->getInputSettings()->offsetGet('operation'));
 		}
 	}
 
@@ -70,12 +70,12 @@ class Settings extends Base {
 			try {
 				$this->checkGivenExtendingSettings($extendingSetting);
 				$this->alterExtendingSettings($extendingSetting);
-			} catch (\RqData\Debugging\UserException $userException) {
+			} catch (\RqData\Debugging\Exceptions\User $userException) {
 				$errorCounter++;
 			}
 		}
 		if ($errorCounter > 0) {
-			throw new SettingUpByInputSettingsFail($errorCounter);
+			throw new \RqData\Process\Exceptions\SettingUpByInputSettingsFail($errorCounter);
 		}
 	}
 
@@ -88,7 +88,7 @@ class Settings extends Base {
 				$this->alterExtendingSettingsCalibrator($extendingSetting);
 				break;
 			default:
-				throw new UnknownEffectOfGivenExtendingSetting($extendingSetting->code);
+				throw new \RqData\Process\Exceptions\UnknownEffectOfGivenExtendingSetting($extendingSetting->code);
 		}
 	}
 
@@ -106,12 +106,12 @@ class Settings extends Base {
 
 	protected function checkGivenExtendingSettings(\RqData\RequiredSettings\File\ExtendingOptions $extendingSetting) {
 		if (!$this->getInputSettings()->offsetExists($extendingSetting->code)) {
-			throw new MissingExtendingSettings(sprintf('Setting code [%s]', $extendingSetting->code));
+			throw new \RqData\Process\Exceptions\MissingExtendingSettings(sprintf('Setting code [%s]', $extendingSetting->code));
 		} elseif (!$this->getInputSettings()->offsetExists($extendingSetting->code)
 			|| (string) $this->getInputSettings()->offsetGet($extendingSetting->code) === ''
 		) {
 			$this->getErrors()->rememberError('nevyplněno', $extendingSetting->humanName);
-			throw new UnfilledExtendingSettings($extendingSetting->code);
+			throw new \RqData\Process\Exceptions\UnfilledExtendingSettings(sprintf('For code [%s]', $extendingSetting->code));
 		}
 	}
 
@@ -155,16 +155,16 @@ class Settings extends Base {
 			if (self::COUNT_CONSEQUENCES_OF_CT_MAXIMUM) {
 				$this->countConsequencesOfCtMaximum($optionalSettings);
 			}
-		} catch (\RqData\Debugging\UserException $userException) {
+		} catch (\RqData\Debugging\Exceptions\User $userException) {
 			$errorCounter++;
 		}
 		try {
 			$this->setOptionalSettingsToKeep($optionalSettings);
-		} catch (\RqData\Debugging\UserException $userException) {
+		} catch (\RqData\Debugging\Exceptions\User $userException) {
 			$errorCounter++;
 		}
 		if ($errorCounter > 0) {
-			throw new CheckingOptionalSettingsFails;
+			throw new \RqData\Process\Exceptions\CheckingOptionalSettingsFails;
 		}
 	}
 
@@ -195,25 +195,25 @@ class Settings extends Base {
 		foreach ($this->getMaximalCtValueSettingsOfConsequences() as $settingOfConsequence) {
 			try {
 				$this->countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence);
-			} catch (\RqData\Debugging\UserException $userException) {
+			} catch (\RqData\Debugging\Exceptions\User $userException) {
 				$failureCount++;
 			}
 		}
 		if ($failureCount > 0) {
-			throw new CountingConsquencesOfCtMaximumFails(sprintf('%d× times', $failureCount));
+			throw new \RqData\Process\Exceptions\CountingConsquencesOfCtMaximumFails(sprintf('%d× times', $failureCount));
 		}
 	}
 
 	protected function countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence) {
 		if (!isset($optionalSettings[$settingOfConsequence->code])) {
 			$this->getErrors()->rememberError('Chybí ' . $settingOfConsequence->humanName, \RqData\OptionalSettings\Consequences\MaximalCtValueSettings::HUMAN_NAME);
-			throw new MissingConsequenceForCtMaximumValue($settingOfConsequence->code);
+			throw new \RqData\Process\Exceptions\MissingConsequenceForCtMaximumValue(sprintf('Consequence code [%s]', $settingOfConsequence->code));
 		} else {
 			$consequenceValue = str_replace(',', '.', $optionalSettings[$settingOfConsequence->code]);
 			if (!preg_match('~^([\d]+([.\d]+)?)?$~', $consequenceValue)) {
 				$this->getErrors()->rememberError($settingOfConsequence->humanName . ' musí být číslo', 'Chybný formát');
-				throw new WrongFormatOfConsequenceValueForCtMaximumValue(sprintf(
-					'code: [%s], value: [%s]', $settingOfConsequence->code, $consequenceValue)
+				throw new \RqData\Process\Exceptions\WrongFormatOfConsequenceValueForCtMaximum(
+					sprintf('code: [%s], value: [%s]', $settingOfConsequence->code, $consequenceValue)
 				);
 			} else {
 				$this->optionalSettings[$settingOfConsequence->code] = $consequenceValue;
@@ -228,16 +228,3 @@ class Settings extends Base {
 		return new \RqData\OptionalSettings\Consequences\MaximalCtValueSettings;
 	}
 }
-
-class NoOperationIsChoosen extends \RqData\Debugging\UserException {}
-class UnfilledExtendingSettings extends \RqData\Debugging\UserException {}
-class SettingUpByInputSettingsFail extends \RqData\Debugging\UserException {}
-class MissingConsequenceForCtMaximumValue extends \RqData\Debugging\UserException {}
-class WrongFormatOfConsequenceValueForCtMaximumValue extends \RqData\Debugging\UserException {}
-class CountingConsquencesOfCtMaximumFails extends \RqData\Debugging\UserException {}
-class UnknownAdditionalFormatingSettings extends \RqData\Debugging\UserException {}
-class CheckingOptionalSettingsFails extends \RqData\Debugging\UserException {}
-
-class UnknownChoosenOperationCode extends \RqData\Debugging\CoreException {}
-class MissingExtendingSettings extends \RqData\Debugging\CoreException {}
-class UnknownEffectOfGivenExtendingSetting extends \RqData\Debugging\CoreException {}
