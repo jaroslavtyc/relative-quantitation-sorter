@@ -31,26 +31,26 @@
 		</div>
 		<hr />
 		<div>
-			<h3><label>{$consequence->maximalCtValue->humanName}</label></h3>
-			Pokud {$consequence->maximalCtValue->humanName} dosáhne
-			<select name="optional[{$consequence->maximalCtValue->code}]">
-				<option value="{$consequence->maximalCtValue->value}">{$consequence->maximalCtValue->value}</option>
-			</select>, pak {$consequence->rqValueEdge->humanName} je
-				<input type="text" name="optional[{$consequence->rqValueEdge->code}]" value="{$formStatesHistory->resolveValue($consequence->rqValueEdge->code, $consequence->rqValueEdge->value)}" size="5" />
+			<h3><label>{$consequence->getMaximalCtValue()->humanName}</label></h3>
+			Pokud {$consequence->getMaximalCtValue()->humanName} dosáhne
+			<select name="optional[{$consequence->getMaximalCtValue()->code}]">
+				<option value="{$consequence->getMaximalCtValue()->value}">{$consequence->getMaximalCtValue()->value}</option>
+			</select>, pak {$consequence->getRqValueEdge()->humanName} je
+				<input type="text" name="optional[{$consequence->getRqValueEdge()->code}]" value="{$formStatesHistory->resolveValue($consequence->getRqValueEdge()->code, $consequence->getRqValueEdge()->value)}" size="5" />
 			a každá
 			<ul>
-				<li>{$consequence->replacementValueUnderMaximum->humanName} bude
-					<select name="optional[{$consequence->replacementValueUnderMaximum->code}]">
-						<option value="{$consequence->replacementValueUnderMaximum->value}">{$consequence->replacementValueUnderMaximum->value}</option>
+				<li>{$consequence->getReplacementValueUnderMaximum()->humanName} bude
+					<select name="optional[{$consequence->getReplacementValueUnderMaximum()->code}]">
+						<option value="{$consequence->getReplacementValueUnderMaximum()->value}">{$consequence->getReplacementValueUnderMaximum()->value}</option>
 					</select>
 				</li>
-				<li>{$consequence->replacementValueOverMaximum->humanName} bude
-					<select name="optional[{$consequence->replacementValueOverMaximum->code}]">
-						<option value="{$consequence->replacementValueOverMaximum->value}">
-							{if $consequence->replacementValueOverMaximum->value == ''}
+				<li>{$consequence->getReplacementValueOverMaximum()->humanName} bude
+					<select name="optional[{$consequence->getReplacementValueOverMaximum()->code}]">
+						<option value="{$consequence->getReplacementValueOverMaximum()->value}">
+							{if $consequence->getReplacementValueOverMaximum()->value == ''}
 								{">>prázný řetězec<<"|escape}
 							{else}
-								{$consequence->replacementValueOverMaximum->value}
+								{$consequence->getReplacementValueOverMaximum()->value}
 							{/if}
 							</option>
 					</select>
