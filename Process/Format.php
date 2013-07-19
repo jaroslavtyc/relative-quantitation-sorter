@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Process;
 
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 use RqData\RequiredSettings\Options\ColumnsPurpose;
 use RqData\OptionalSettings\Consequences\Settings\MaximalCtValue;
 use RqData\OptionalSettings\Consequences\Settings\RqValueEdge;
@@ -32,7 +32,7 @@ class Format extends Base {
 	protected $nameOfCalibrator;
 	protected $formedHeader;
 
-	public function __construct(InputValues $inputValues, Errors $errors) {
+	public function __construct(InputValues $inputValues, UserErrors $errors) {
 		parent::__construct($errors);
 		$this->inputValues = $inputValues;
 	}

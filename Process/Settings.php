@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Process;
 
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 
 class Settings extends Base {
 
@@ -13,7 +13,7 @@ class Settings extends Base {
 	protected $extendingSettings = array();
 	protected $inputSettings;
 
-	public function __construct(\ArrayAccess $inputSettings, Errors $errors) {
+	public function __construct(\ArrayAccess $inputSettings, UserErrors $errors) {
 		parent::__construct($errors);
 		$this->setInputSettings($inputSettings);
 	}

@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Process;
 
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 use RqData\RequiredSettings\File\FileWithData;
 use RqData\Process\Exceptions\InputFileIsMissing;
 
@@ -10,7 +10,7 @@ class InputFile extends Base {
 	protected $filesInformations;
 	protected $uploadedFile;
 
-	public function __construct(array $filesInformations, Errors $errors) {
+	public function __construct(array $filesInformations, UserErrors $errors) {
 		parent::__construct($errors);
 		$this->filesInformations = new \ArrayObject($filesInformations);
 	}

@@ -2,7 +2,7 @@
 namespace RqData\Frontend\Controllers;
 
 use \RqData\Process\ResultFileDownloader;
-use \RqData\Registry\Errors;
+use \RqData\Registry\UserErrors;
 use RqData\Debugging\Exceptions\User;
 
 class DataTransform {
@@ -11,7 +11,7 @@ class DataTransform {
 
 	public function __construct(
 		ResultFileDownloader $resultFileDownload,
-		Errors $errors
+		UserErrors $errors
 	) {
 		$this->resultFileDownload = $resultFileDownload;
 		$this->errors = $errors;
@@ -34,7 +34,7 @@ class DataTransform {
 	}
 
 	/**
-	 * @return \RqData\Registry\Errors
+	 * @return \RqData\Registry\UserErrors
 	 */
 	protected function getErrors() {
 		return $this->errors;

@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Process;
 
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 use RqData\History\FileUtilities;
 use RqData\OptionalSettings\Registry\MeasurementSettings;
 
@@ -20,7 +20,7 @@ class Result extends Base {
 	protected $resultFilename;
 	protected $userFileBasename;
 
-	public function __construct(Format $format, Errors $errors) {
+	public function __construct(Format $format, UserErrors $errors) {
 		parent::__construct($errors);
 		$this->format = $format;
 	}

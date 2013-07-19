@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Process;
 
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 use RqData\Process\Settings;
 use RqData\RequiredSettings\File\FileWithData;
 use RqData\Process\Exceptions\EmptyInputFile;
@@ -19,7 +19,7 @@ class InputValues extends Base {
 	protected $inputFile;
 	protected $settings;
 
-	public function __construct(InputFile $inputFile, Settings $settings, Errors $errors) {
+	public function __construct(InputFile $inputFile, Settings $settings, UserErrors $errors) {
 		parent::__construct($errors);
 		$this->inputFile = $inputFile;
 		$this->settings = $settings;

@@ -2,7 +2,7 @@
 namespace RqData\History;
 
 use RqData\Core\Object;
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 use RqData\History\Exceptions\DuplicitStructure;
 
 /**
@@ -18,7 +18,7 @@ class File extends Object {
 	protected $listOfFiles;
 	private $errors;
 
-	public function __construct(Errors $errors) {
+	public function __construct(UserErrors $errors) {
 		$this->errors = $errors;
 	}
 
@@ -73,7 +73,7 @@ class File extends Object {
 	}
 
 	/**
-	 * @return Errors
+	 * @return UserErrors
 	 */
 	protected function getErrors() {
 		return $this->errors;

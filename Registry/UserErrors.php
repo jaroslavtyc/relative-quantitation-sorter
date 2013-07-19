@@ -2,9 +2,8 @@
 namespace RqData\Registry;
 
 use Exceptions\UnkownReturnMethodCodeException;
-use Exceptions\UnkownHttpHostException;
 
-class Errors {
+class UserErrors {
 
 	const GET_RETURN_METHOD = 1;
 	const SESSION_RETURN_METHOD = 10;
@@ -118,7 +117,7 @@ class Errors {
 
 	private function getBaseUrl() {
 		if (!isset($_SERVER['HTTP_HOST'])) {
-			throw new UnkownHttpHostException();
+			throw new Exceptions\UnkownHttpHostException();
 		}
 
 		if (!isset($_SERVER['SERVER_PROTOCOL'])) {

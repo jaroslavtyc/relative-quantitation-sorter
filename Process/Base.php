@@ -1,13 +1,13 @@
 <?php
 namespace RqData\Process;
 
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 
 abstract class Base {
 
 	private $errors;
 
-	public function __construct(Errors $errors){
+	public function __construct(UserErrors $errors){
 		$this->errors = $errors;
 	}
 

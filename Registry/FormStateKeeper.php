@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Registry;
 
-class FormStateKeeper extends \universal\BaseClass {
+class FormStateKeeper extends RqData\Core\Object {
 
 	private $session;
 
@@ -54,7 +54,7 @@ class FormStateKeeper extends \universal\BaseClass {
 				$valueToReturn = $heldFormStates[$arrayName][$itemName];
 			}
 		}
-		
+
 		return $valueToReturn;
 	}
 

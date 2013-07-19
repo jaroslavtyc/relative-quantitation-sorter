@@ -3,7 +3,7 @@ namespace RqData\Process;
 error_reporting(-1);
 require(__DIR__ . '/../universal/autoload.php');
 
-$errors = new \RqData\Registry\Errors();
+$errors = new \RqData\Registry\UserErrors();
 $formStateKeeper = new \RqData\Registry\FormStateKeeper();
 $formStateKeeper->holdFormStates($_POST);
 $inputSettingsValues = new \ArrayObject($formStateKeeper->getHeldFormStates());

@@ -1,9 +1,6 @@
 <?php
 namespace RqData\Registry;
 
-use Exceptions\HeadersAlreadySentException;
-use Exceptions\StartingSessionException;
-
 class Session {
 
 	private $container;
@@ -16,12 +13,12 @@ class Session {
 	private function ensureSession() {
 		if ($this->getId() === '') { // session does not exists yet
 			if ($this->haveBeenHeadersSent()) { // any header was already sent, session can not be started
-				throw new HeadersAlreadySentException();
+				throw new Exceptions\HeadersAlreadySentException();
 			}
 
 			$this->startSession();
 			if ($this->getId() === '') { // session has not been started
-				throw new StartingSessionException();
+				throw new Exceptions\StartingSessionException();
 			}
 		}
 	}

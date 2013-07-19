@@ -2,7 +2,7 @@
 namespace RqData\Frontend\Controllers;
 
 use RqData\View\SmartyViewer;
-use RqData\Registry\Errors;
+use RqData\Registry\UserErrors;
 
 abstract class DisplayWithErrorMessages extends SmartyViewer {
 
@@ -17,11 +17,11 @@ abstract class DisplayWithErrorMessages extends SmartyViewer {
 	}
 
 	/**
-	 * @return Errors
+	 * @return UserErrors
 	 */
 	protected function getErrors() {
 		if (!isset($this->errors)) {
-			$this->errors = new Errors();
+			$this->errors = new UserErrors();
 		}
 		return $this->errors;
 	}
@@ -34,7 +34,7 @@ abstract class DisplayWithErrorMessages extends SmartyViewer {
 
 	protected function getErrorMessages() {
 		if ($this->getErrors()->existsOldError()) {
-			return $this->getErrors()->getErrors(Errors::DEFAULT_RETURN_METHOD);
+			return $this->getErrors()->getErrors(UserErrors::DEFAULT_RETURN_METHOD);
 		} else {
 			return array();
 		}
