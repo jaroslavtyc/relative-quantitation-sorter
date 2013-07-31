@@ -1,10 +1,7 @@
 <?php
 namespace RqData\View;
 
-use RqData\Core\Object;
-
-class SmartyFetcher extends Object implements Fetcher {
-
+class SmartyFetcher extends \RqData\Core\Object implements Fetcher {
 	private $smarty;
 	private $template;
 

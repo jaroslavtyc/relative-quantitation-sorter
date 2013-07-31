@@ -1,10 +1,7 @@
 <?php
 namespace RqData\View;
 
-use RqData\Core\Object;
-
-abstract class SmartyViewer extends Object implements Viewer {
-
+abstract class SmartyViewer extends \RqData\Core\Object implements Viewer {
 	private $fetcher;
 
 	public function __construct(Fetcher $fetcher) {

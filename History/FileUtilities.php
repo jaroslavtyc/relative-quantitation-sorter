@@ -2,7 +2,6 @@
 namespace RqData\History;
 
 class FileUtilities {
-
 	public static function getUrlHistoryRootFolderPath() {
 		return '/' . \basename(self::getHistoryRootFolderPath());
 	}

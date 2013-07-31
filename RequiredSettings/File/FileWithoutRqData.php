@@ -2,7 +2,6 @@
 namespace RqData\RequiredSettings\File;
 
 class FileWithoutRqData extends FileWithData {
-
 	const HUMAN_NAME = 'RQ data je nutné vypočítat';
 	const CODE = 'fileWitoutRqData';
 	const VALUE = '';

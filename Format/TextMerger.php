@@ -2,7 +2,6 @@
 namespace RqData\Format;
 
 class TextMerger {
-
 	private $tinyButStrong;
 
 	public function __construct(\clsTinyButStrong $tinyButStrong) {

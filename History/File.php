@@ -10,7 +10,6 @@ use RqData\History\Exceptions\DuplicitStructure;
  * files
  */
 class File extends Object {
-
 	/**
 	 * List of file names indexed by time of rqdata calling, then by tempname
 	 * (to avoid collision of history files saved by rqdata called simultaneously)

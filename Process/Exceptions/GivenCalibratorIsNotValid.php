@@ -1,5 +1,5 @@
 <?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class GivenCalibratorIsNotValid extends \InvalidArgumentException implements User {}
+class GivenCalibratorIsNotValid extends \InvalidArgumentException implements External {}

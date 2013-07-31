@@ -6,7 +6,6 @@ use RqData\History\FileUtilities;
 use RqData\OptionalSettings\Registry\MeasurementSettings;
 
 class Result extends Base {
-
 	const KEEP_USER_RESULT_FILE = TRUE;
 	const BASE_RESULT_FILENAME = 'rqData';
 	const RESULT_FILENAME_SUFFIX = 'xls';
@@ -194,7 +193,7 @@ class Result extends Base {
 	protected function addMeasurementSettingsToKeepLegend(\universal\Folder\File\Xls\HtmlXlsFile $xls, $settingsToKeep) {
 		$footerData = array();
 		$possibleMeauserments = array();
-		foreach (new \MeasurementSettings as $possibleMeauserment) {
+		foreach (new MeasurementSettings as $possibleMeauserment) {
 			$possibleMeauserments[$possibleMeauserment->code] = $possibleMeauserment;
 		}
 		foreach ($settingsToKeep as $code => $meausermentSetting) {

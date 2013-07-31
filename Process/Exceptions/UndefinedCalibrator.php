@@ -1,5 +1,5 @@
 <?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class UndefinedCalibrator extends \OutOfBoundsException implements User {}
+class UndefinedCalibrator extends \OutOfBoundsException implements External {}

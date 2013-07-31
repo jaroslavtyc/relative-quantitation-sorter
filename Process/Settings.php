@@ -4,7 +4,6 @@ namespace RqData\Process;
 use RqData\Registry\UserErrors;
 
 class Settings extends Base {
-
 	const COUNT_CONSEQUENCES_OF_CT_MAXIMUM = TRUE;
 
 	protected $columnsPurpose;
@@ -70,7 +69,7 @@ class Settings extends Base {
 			try {
 				$this->checkGivenExtendingSettings($extendingSetting);
 				$this->alterExtendingSettings($extendingSetting);
-			} catch (\RqData\Debugging\Exceptions\User $userException) {
+			} catch (\RqData\Debugging\Exceptions\External $userException) {
 				$errorCounter++;
 			}
 		}
@@ -155,12 +154,12 @@ class Settings extends Base {
 			if (self::COUNT_CONSEQUENCES_OF_CT_MAXIMUM) {
 				$this->countConsequencesOfCtMaximum($optionalSettings);
 			}
-		} catch (\RqData\Debugging\Exceptions\User $userException) {
+		} catch (\RqData\Debugging\Exceptions\External $userException) {
 			$errorCounter++;
 		}
 		try {
 			$this->setOptionalSettingsToKeep($optionalSettings);
-		} catch (\RqData\Debugging\Exceptions\User $userException) {
+		} catch (\RqData\Debugging\Exceptions\External $userException) {
 			$errorCounter++;
 		}
 		if ($errorCounter > 0) {
@@ -195,7 +194,7 @@ class Settings extends Base {
 		foreach ($this->getMaximalCtValueSettingsOfConsequences() as $settingOfConsequence) {
 			try {
 				$this->countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence);
-			} catch (\RqData\Debugging\Exceptions\User $userException) {
+			} catch (\RqData\Debugging\Exceptions\External $userException) {
 				$failureCount++;
 			}
 		}
@@ -206,7 +205,7 @@ class Settings extends Base {
 
 	protected function countConsquenceOfCtMaximum($optionalSettings, $settingOfConsequence) {
 		if (!isset($optionalSettings[$settingOfConsequence->code])) {
-			$this->getErrors()->rememberError('Chybí ' . $settingOfConsequence->humanName, \RqData\OptionalSettings\Consequences\MaximalCtValueSettings::HUMAN_NAME);
+			$this->getErrors()->rememberError('Chybí ' . $settingOfConsequence->humanName, \RqData\OptionalSettings\Consequences\CtMaximum::HUMAN_NAME);
 			throw new \RqData\Process\Exceptions\MissingConsequenceForCtMaximumValue(sprintf('Consequence code [%s]', $settingOfConsequence->code));
 		} else {
 			$consequenceValue = str_replace(',', '.', $optionalSettings[$settingOfConsequence->code]);
@@ -222,9 +221,9 @@ class Settings extends Base {
 	}
 
 	/**
-	 * @return \RqData\OptionalSettings\Consequences\MaximalCtValueSettings
+	 * @return \RqData\OptionalSettings\Consequences\CtMaximum
 	 */
 	protected function getMaximalCtValueSettingsOfConsequences() {
-		return new \RqData\OptionalSettings\Consequences\MaximalCtValueSettings;
+		return new \RqData\OptionalSettings\Consequences\CtMaximum;
 	}
 }

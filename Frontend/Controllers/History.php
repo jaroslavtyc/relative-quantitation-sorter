@@ -4,7 +4,6 @@ namespace RqData\Frontend\Controllers;
 use RqData\History\File;
 
 class History extends DisplayWithErrorMessages {
-
 	protected function setUpFetcher() {
 		parent::setUpFetcher();
 		$this->getFetcher()->assign('history', $this->buildHistoryFile());

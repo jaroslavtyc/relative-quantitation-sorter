@@ -8,7 +8,6 @@ use RqData\RequiredSettings\File\FileWithoutRqData;
  * Keeper of work / file types
  */
 class OperationList extends RequiredSettings {
-
 	const HUMAN_NAME = 'určení obsahu souboru';
 	const CODE = 'operationType';
 	const VALUE = '';

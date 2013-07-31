@@ -1,5 +1,5 @@
 <?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class CalibratorMaximumCtValueOverflow extends \OverflowException implements User {}
+class CalibratorMaximumCtValueOverflow extends \OverflowException implements External {}

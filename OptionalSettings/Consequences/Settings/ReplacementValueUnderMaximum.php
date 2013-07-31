@@ -1,10 +1,26 @@
 <?php
 namespace RqData\OptionalSettings\Consequences\Settings;
 
-class ReplacementValueUnderMaximum extends \universal\SingleHtmlOptionModel {
+class ReplacementValueUnderMaximum implements \RqData\Html\SingleOption {
+	private $humanName;
+	private $code;
+	private $value;
 
-	const CODE = 'replacementValueUnderMaximum';
-	const HUMAN_NAME = 'hodnota RQ <strong>pod</strong> zlomovou hodnotou';
-	const VALUE = 0.0001;
+	public function __construct() {
+		$this->humanName = 'hodnota RQ <strong>pod</strong> zlomovou hodnotou';
+		$this->code = 'replacementValueUnderMaximum';
+		$this->value = 0.0001;
+	}
 
+	public function getHumanName() {
+		return $this->humanName;
+	}
+
+	public function getCode() {
+		return $this->code;
+	}
+
+	public function getValue() {
+		return $this->value;
+	}
 }

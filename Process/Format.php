@@ -14,7 +14,6 @@ use RqData\Process\Exceptions\CalibratorMaximumCtValueOverflow;
 use RqData\Process\Exceptions\FormatingDataFailedDueToUserMistake;
 
 class Format extends Base {
-
 	const DISALLOW_MAXIMUM_CT_FOR_CALIBRATOR = TRUE;
 	const CT_DATA_PRECISION = 3;
 	const RQ_DATA_PRECISION = 3;

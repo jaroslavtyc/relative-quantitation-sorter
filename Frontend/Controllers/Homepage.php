@@ -1,14 +1,7 @@
 <?php
 namespace RqData\Frontend\Controllers;
 
-use \RqData\RequiredSettings\Options\OperationList;
-use \RqData\OptionalSettings\Consequences\MaximalCtValueSettings;
-use \RqData\OptionalSettings\Registry\MeasurementSettings;
-use \RqData\RequiredSettings\File\FileWithData;
-use \RqData\Registry\FormStateKeeper;
-
 class Homepage extends DisplayWithErrorMessages {
-
 	protected function setUpWorker() {
 		parent::setUpWorker();
 		$this->setUpValuesToView();
@@ -20,16 +13,16 @@ class Homepage extends DisplayWithErrorMessages {
 	}
 
 	protected function setUpValuesToView() {
-		$this->getFetcher()->assign('formStatesHistory', $this->getFormStateHolder());
+		$this->getFetcher()->assign('formStatesHistory', $this->getFormStateKeeper());
 		$this->getFetcher()->assign('operationList', $this->getOperationList());
-		$this->getFetcher()->assign('consequence', $this->getConsequence());
-		$this->getFetcher()->assign('measurementSettings', $this->getMeasurements());
-		$this->getFetcher()->assign('inputFileName', FileWithData::FILE_NAME);
+		$this->getFetcher()->assign('consequence', $this->getConsequenceOfCtMaximum());
+		$this->getFetcher()->assign('measurementSettings', $this->getMeasurementSettings());
+		$this->getFetcher()->assign('inputFileName', \RqData\RequiredSettings\File\FileWithData::FILE_NAME);
 		$this->getFetcher()->assign(
 			'measurementSettingsRegistry',
 			array(
-				'code' => MeasurementSettings::CODE,
-				'name' => MeasurementSettings::HUMAN_NAME
+				'code' => \RqData\OptionalSettings\Registry\MeasurementSettings::CODE,
+				'name' => \RqData\OptionalSettings\Registry\MeasurementSettings::HUMAN_NAME
 			)
 		);
 	}
@@ -47,18 +40,18 @@ class Homepage extends DisplayWithErrorMessages {
 	}
 
 	protected function getOperationList() {
-		return new OperationList;
+		return new \RqData\RequiredSettings\Options\OperationList;
 	}
 
-	protected function getConsequence() {
-		return new MaximalCtValueSettings;
+	protected function getConsequenceOfCtMaximum() {
+		return new \RqData\OptionalSettings\Consequences\CtMaximum;
 	}
 
-	protected function getMeasurements() {
-		return new MeasurementSettings;
+	protected function getMeasurementSettings() {
+		return new \RqData\OptionalSettings\Registry\MeasurementSettings;
 	}
 
-	protected function getFormStateHolder() {
-		return new FormStateKeeper();
+	protected function getFormStateKeeper() {
+		return new \RqData\Registry\FormStateKeeper();
 	}
 }

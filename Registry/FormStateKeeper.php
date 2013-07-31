@@ -2,7 +2,6 @@
 namespace RqData\Registry;
 
 class FormStateKeeper extends RqData\Core\Object {
-
 	private $session;
 
 	public function __construct() {

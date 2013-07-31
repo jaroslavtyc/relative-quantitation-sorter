@@ -1,5 +1,5 @@
 <?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class EmptyInputFile extends \UnexpectedValueException implements User {}
+class EmptyInputFile extends \UnexpectedValueException implements External {}

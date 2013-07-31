@@ -4,7 +4,6 @@ namespace RqData\RequiredSettings\File;
  * Base of classses describing file content.
  */
 abstract class FileWithData extends \RqData\RequiredSettings\Options\RequiredSettings {
-
 	const FILE_NAME = 'rozmeryBrebery';
 
 	/**

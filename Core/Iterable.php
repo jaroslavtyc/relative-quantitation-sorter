@@ -2,7 +2,6 @@
 namespace RqData\Core;
 
 class Iterable extends Object implements \Iterator {
-
 	protected $data;
 	protected $currentKey;
 

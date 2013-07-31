@@ -1,5 +1,5 @@
 <?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class UnfilledExtendingSettings extends \InvalidArgumentException implements User {}
+class UnfilledExtendingSettings extends \InvalidArgumentException implements External {}

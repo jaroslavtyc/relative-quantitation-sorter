@@ -2,7 +2,6 @@
 namespace RqData\RequiredSettings\File;
 
 abstract class ExtendingOptions extends \RqData\RequiredSettings\Settings {
-
 	protected $note;
 
 	public function __construct() {

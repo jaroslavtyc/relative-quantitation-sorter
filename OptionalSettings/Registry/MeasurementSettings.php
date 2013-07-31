@@ -4,22 +4,15 @@ namespace RqData\OptionalSettings\Registry;
  * Values used to set meauserement, needed to be saved for optional
  * human backward control
  */
-class MeasurementSettings extends \universal\IterableTycClass {
-
+class MeasurementSettings extends \RqData\Core\Iterable {
 	const HUMAN_NAME = 'Uložení parametrů programu RQ Study';
 	const CODE = 'measurementSettingsToKeep';
 
-	protected $treshold;
-	protected $baseline;
-
 	public function __construct() {
-		$this->setSettings();
-		$this->makeAllPropertiesReadable();
-		parent::__construct(array($this->treshold, $this->baseline));
+		parent::__construct($this->getSettingsToKeep());
 	}
 
-	protected function setSettings() {
-		$this->treshold = new Settings\MeasurementTreshold;
-		$this->baseline = new Settings\MeasurementBaseline;
+	private function getSettingsToKeep() {
+		return array(new Settings\MeasurementTreshold, new Settings\MeasurementBaseline);
 	}
 }

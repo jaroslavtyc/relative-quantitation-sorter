@@ -2,7 +2,6 @@
 namespace RqData\Registry;
 
 class Session {
-
 	private $container;
 
 	public function __construct() {

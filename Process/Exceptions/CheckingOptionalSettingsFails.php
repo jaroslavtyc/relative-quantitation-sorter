@@ -1,5 +1,5 @@
 <?php<?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class CheckingOptionalSettingsFails extends \RuntimeException implements User {}
+class CheckingOptionalSettingsFails extends \RuntimeException implements External {}

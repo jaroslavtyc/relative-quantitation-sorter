@@ -3,7 +3,6 @@ namespace RqData\Tooltips;
 use RqData\View\SmartyFetcher;
 
 class Tooltips {
-
 	/**
 	 * @param string $name
 	 * @return Tooltip
@@ -29,9 +28,7 @@ class Tooltips {
 			case 'inputFileFormat' :
 				return new InputFileTooltip(new SmartyFetcher(new \Smarty, 'inputFileTooltip.tpl'));
 			default:
-				throw new UnkownTooltipNameException($name);
+				throw new Exceptions\UnkownTooltipName($name);
 		}
 	}
 }
-
-class UnkownTooltipNameException extends \InvalidArgumentException {}

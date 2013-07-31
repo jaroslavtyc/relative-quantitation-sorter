@@ -8,7 +8,6 @@ use RqData\Process\Exceptions\EmptyInputFile;
 use RqData\Process\Exceptions\WrongInputFileFormat;
 
 class InputValues extends Base {
-
 	const FIRST_ROW_CONTAINS_HEADER = TRUE;
 	const KEEP_USER_RESOURCE_FILE = TRUE;
 
@@ -89,10 +88,8 @@ class InputValues extends Base {
 				throw new Exception('No file to save');
 			}
 
-			if (!$this->getInputFile()->getUploadedFile()->copyTo(
-				\RqData\History\FileUtilities::getUserResourceFileFolderPath(),
-				$this->timeTempnameKey . '_' . $this->getInputFile()->getUploadedFile()->size . '_' . $this->getInputFile()->getUploadedFile()->name
-			)) {
+			if (!$this->getInputFile()->moveTo(sprintf('%s%s_%s_%s', \RqData\History\FileUtilities::getUserResourceFileFolderPath(), $this->timeTempnameKey, $this->getInputFile()->getSize(), $this->getInputFile()->getName()))
+			) {
 				$this->getErrors()->rememberError('Nezdařilo se uložit nahraný soubor', 'Historie');
 
 				return FALSE;
@@ -103,7 +100,7 @@ class InputValues extends Base {
 	}
 
 	private function inputValuesSetRawData() {
-		$this->inputData = $this->getInputFile()->getUploadedFile()->getContentArray();
+		$this->inputData = $this->getInputFile()->getContentArray();
 		if (!$this->inputData) {
 			$this->getErrors()->rememberError('je prázdný', 'Soubor');
 			throw new EmptyInputFile;
@@ -177,6 +174,6 @@ class InputValues extends Base {
 	 * Setter for identificator of working files
 	 */
 	private function setTimeTempnameKey() {
-		$this->timeTempnameKey = time() . '_' .  str_replace('_', '', $this->getInputFile()->getUploadedFile()->tmpFilename);
+		$this->timeTempnameKey = time() . '_' .  str_replace('_', '', $this->getInputFile()->getTempFilename());
 	}
 }

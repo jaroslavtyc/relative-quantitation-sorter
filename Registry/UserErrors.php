@@ -4,7 +4,6 @@ namespace RqData\Registry;
 use Exceptions\UnkownReturnMethodCodeException;
 
 class UserErrors {
-
 	const GET_RETURN_METHOD = 1;
 	const SESSION_RETURN_METHOD = 10;
 	const SQL_RETURN_METHOD = 100;

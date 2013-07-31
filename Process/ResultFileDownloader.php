@@ -4,7 +4,6 @@ namespace RqData\Process;
 use RqData\Registry\UserErrors;
 
 class ResultFileDownloader extends Base {
-
 	private $result;
 
 	public function __construct(Result $result, UserErrors $errors){

@@ -3,10 +3,9 @@ namespace RqData\Frontend\Controllers;
 
 use \RqData\Process\ResultFileDownloader;
 use \RqData\Registry\UserErrors;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
 class DataTransform {
-
 	private $resultFileDownload;
 
 	public function __construct(
@@ -20,7 +19,7 @@ class DataTransform {
 	public function run() {
 		try {
 			$this->getResultFileDownload()->process();
-		} catch (User $exception) {
+		} catch (External $exception) {
 			$this->getErrors()->redirectWithErrorsTransfer('index.php#'. DisplayWithErrorMessages::ERROR_ANCHOR_NAME);
 			exit;
 		}

@@ -1,10 +1,26 @@
 <?php
 namespace RqData\OptionalSettings\Consequences\Settings;
 
-class RqValueEdge extends \universal\SingleHtmlOptionModel {
+class RqValueEdge implements \RqData\Html\SingleOption {
+	private $humanName;
+	private $code;
+	private $value;
 
-	const CODE = 'rqValueEdge';
-	const HUMAN_NAME = 'zlomová hodnota RQ';
-	const VALUE = 0.05;
+	public function __construct() {
+		$this->humanName = 'zlomová hodnota RQ';
+		$this->code = 'rqValueEdge';
+		$this->value = 0.05;
+	}
 
+	public function getHumanName() {
+		return $this->humanName;
+	}
+
+	public function getCode() {
+		return $this->code;
+	}
+
+	public function getValue() {
+		return $this->value;
+	}
 }

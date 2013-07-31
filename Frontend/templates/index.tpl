@@ -31,10 +31,10 @@
 		</div>
 		<hr />
 		<div>
-			<h3><label>{$consequence->getMaximalCtValue()->humanName}</label></h3>
-			Pokud {$consequence->getMaximalCtValue()->humanName} dosáhne
-			<select name="optional[{$consequence->getMaximalCtValue()->code}]">
-				<option value="{$consequence->getMaximalCtValue()->value}">{$consequence->getMaximalCtValue()->value}</option>
+			<h3><label>{$consequence->getMaximalCtValue()->geHumanName()}</label></h3>
+			Pokud {$consequence->getMaximalCtValue()->geHumanName()} dosáhne
+			<select name="optional[{$consequence->getMaximalCtValue()->getCode()}]">
+				<option value="{$consequence->getMaximalCtValue()->getValue()}">{$consequence->getMaximalCtValue()->getValue()}</option>
 			</select>, pak {$consequence->getRqValueEdge()->humanName} je
 				<input type="text" name="optional[{$consequence->getRqValueEdge()->code}]" value="{$formStatesHistory->resolveValue($consequence->getRqValueEdge()->code, $consequence->getRqValueEdge()->value)}" size="5" />
 			a každá

@@ -1,5 +1,5 @@
 <?php<?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class UnknownEffectOfGivenExtendingSetting extends \UnexpectedValueException implements User {}
+class UnknownEffectOfGivenExtendingSetting extends \UnexpectedValueException implements External {}

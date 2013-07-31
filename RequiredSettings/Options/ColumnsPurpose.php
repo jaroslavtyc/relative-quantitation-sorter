@@ -2,7 +2,6 @@
 namespace RqData\RequiredSettings\Options;
 
 class ColumnsPurpose extends RequiredSettings {
-
 	const HUMAN_NAME = 'požadovaná posloupnost sloupců';
 	const CODE = 'columnsPurpose';
 	const VALUE = '';

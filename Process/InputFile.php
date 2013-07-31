@@ -3,12 +3,10 @@ namespace RqData\Process;
 
 use RqData\Registry\UserErrors;
 use RqData\RequiredSettings\File\FileWithData;
-use RqData\Process\Exceptions\InputFileIsMissing;
 
 class InputFile extends Base {
-
-	protected $filesInformations;
-	protected $uploadedFile;
+	private $filesInformations;
+	private $uploadedFile;
 
 	public function __construct(array $filesInformations, UserErrors $errors) {
 		parent::__construct($errors);
@@ -18,28 +16,49 @@ class InputFile extends Base {
 	public function process() {
 		if (!$this->getFilesInformations()->offsetExists(FileWithData::FILE_NAME)) {
 			$this->getErrors()->rememberError('chybí', 'Soubor');
-			throw new InputFileIsMissing;
+			throw new Exceptions\InputFileIsMissing;
 		} else {
 			$fileInfo = $this->getFilesInformations()->offsetGet(FileWithData::FILE_NAME);
-			if ($fileInfo['name'] == '') {
+			if ($fileInfo['name'] === '') {
 				$this->getErrors()->rememberError('chybí', 'Soubor');
-				throw new InputFileIsMissing;
+				throw new Exceptions\InputFileIsMissing;
+			} else {
+				$this->uploadedFile = new \RqData\Html\UploadedFile(FileWithData::FILE_NAME);
 			}
 		}
-		$this->uploadedFile = new \universal\Folder\File\UploadedFile(FileWithData::FILE_NAME);
+	}
+
+	public function moveTo($destinationFilepath) {
+		$this->getUploadedFile()->moveTo($destinationFilepath);
+	}
+
+	public function getSize() {
+		$this->getUploadedFile()->getSize();
+	}
+
+	public function getName() {
+		$this->getUploadedFile()->getName();
+	}
+
+	public function getContentArray() {
+		$this->getUploadedFile()->getContentArray();
+	}
+
+	public function getTempFilename() {
+		$this->getUploadedFile()->getTempFilename();
 	}
 
 	/**
-	 * @return \universal\Folder\File\UploadedFile
+	 * @return \RqData\Html\UploadedFile
 	 */
-	public function getUploadedFile() {
+	private function getUploadedFile() {
 		return $this->uploadedFile;
 	}
 
 	/**
 	 * @return \ArrayObject
 	 */
-	protected function getFilesInformations() {
+	private function getFilesInformations() {
 		return $this->filesInformations;
 	}
 }

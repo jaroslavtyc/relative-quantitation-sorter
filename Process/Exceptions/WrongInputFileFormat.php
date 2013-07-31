@@ -1,5 +1,5 @@
 <?php
 namespace RqData\Process\Exceptions;
-use RqData\Debugging\Exceptions\User;
+use RqData\Debugging\Exceptions\External;
 
-class WrongInputFileFormat extends \UnexpectedValueException implements User {}
+class WrongInputFileFormat extends \UnexpectedValueException implements External {}

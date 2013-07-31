@@ -5,7 +5,6 @@ use RqData\View\SmartyViewer;
 use RqData\Registry\UserErrors;
 
 abstract class DisplayWithErrorMessages extends SmartyViewer {
-
 	const ERROR_ANCHOR_NAME = 'process-error-report';
 
 	private $errors;

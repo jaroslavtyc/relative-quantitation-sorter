@@ -1,8 +1,7 @@
 <?php
 namespace RqData\OptionalSettings\Consequences;
 
-class MaximalCtValueSettings extends RqData\Core\Object {
-
+class CtMaximum extends RqData\Core\Object {
 	const CODE = 'consequencesOfCtMaximum';
 	const HUMAN_NAME ='Úprava hodnot při dosažení maxima CT';
 

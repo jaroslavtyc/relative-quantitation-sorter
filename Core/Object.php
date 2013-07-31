@@ -2,7 +2,6 @@
 namespace RqData\Core;
 
 abstract class Object {
-
 	public function __get($name) {
 		throw new \RqData\Core\Exceptions\ReadingAccess(sprintf('Reading of variable [%s->%s] fails. Does not exists or has restricted access.', \get_class($this), $name));
 	}

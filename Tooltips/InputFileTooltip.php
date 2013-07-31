@@ -5,7 +5,6 @@ use RqData\RequiredSettings\Options\ColumnsPurpose;
 use RqData\View\Fetcher;
 
 class InputFileTooltip implements Tooltip {
-
 	private $fetcher;
 
 	public function __construct(Fetcher $fetcher) {
