@@ -63,8 +63,6 @@ class UserErrors {
 				break;
 			case self::SQL_RETURN_METHOD:
 				break;
-			case self::ANY_RETURN_METHOD:
-				break;
 			default:
 				throw new UnkownReturnMethodCodeException($code);
 		}
@@ -148,39 +146,37 @@ class UserErrors {
 		exit;
 	}
 
-	public function existsError($returnMethod = self::ANY_RETURN_METHOD) {
+	public function existsError($returnMethod = self::SESSION_RETURN_METHOD) {
 		return $this->existsOldError($returnMethod) && $this->existsNewError($returnMethod);
 	}
 
-	public function existsOldError($returnMethod = self::ANY_RETURN_METHOD) {
+	public function existsOldError($returnMethod = self::SESSION_RETURN_METHOD) {
 		return $this->calculateNumberOfErrors($this->oldErrors, $returnMethod, 1) > 0;
 	}
 
-	public function existsNewError($returnMethod = self::ANY_RETURN_METHOD) {
+	public function existsNewError($returnMethod = self::SESSION_RETURN_METHOD) {
 		return $this->calculateNumberOfErrors($this->newErrors, $returnMethod, 1) > 0;
 	}
 
-	public function getAmountOfNewErrors($returnMethod = self::ANY_RETURN_METHOD, $atMost = self::MAXIMUM_RETURNED_ERRORS) {
+	public function getAmountOfNewErrors($returnMethod = self::SESSION_RETURN_METHOD, $atMost = self::MAXIMUM_RETURNED_ERRORS) {
 		return $this->calculateNumberOfErrors($this->newErrors, $returnMethod, $atMost);
 	}
 
 	public function getAmountOfErrors() {
-		$oldErrorsCount = $this->calculateNumberOfErrors($this->oldErrors, self::ANY_RETURN_METHOD, self::MAXIMUM_RETURNED_ERRORS, TRUE);
-		$newErrorsCount = $this->calculateNumberOfErrors($this->newErrors, self::ANY_RETURN_METHOD, self::MAXIMUM_RETURNED_ERRORS, TRUE);
+		$oldErrorsCount = $this->calculateNumberOfErrors($this->oldErrors, self::SESSION_RETURN_METHOD, self::MAXIMUM_RETURNED_ERRORS, TRUE);
+		$newErrorsCount = $this->calculateNumberOfErrors($this->newErrors, self::SESSION_RETURN_METHOD, self::MAXIMUM_RETURNED_ERRORS, TRUE);
 
 		return $oldErrorsCount + $newErrorsCount;
 	}
 
-	private function calculateNumberOfErrors($errors, $returnMethod = self::ANY_RETURN_METHOD, $atMost = self::MAXIMUM_RETURNED_ERRORS) {
+	private function calculateNumberOfErrors($errors, $returnMethod = self::SESSION_RETURN_METHOD, $atMost = self::MAXIMUM_RETURNED_ERRORS) {
 		$returnMethod = $this->validateReturnMethod($returnMethod);
 		$atMost = (int) $atMost;
 		$amount = 0;
-		if ($returnMethod !== self::ANY_RETURN_METHOD) {
-			$searchedReturnMethod = $this->getReturnMethodName($returnMethod);
-		}
+		$searchedReturnMethod = $this->getReturnMethodName($returnMethod);
 
 		foreach ($errors as $currentReturnMethod=>$singleMethodErrors) {
-			if (($returnMethod === self::ANY_RETURN_METHOD) or ($searchedReturnMethod == $currentReturnMethod)) {
+			if ($searchedReturnMethod == $currentReturnMethod) {
 				foreach($singleMethodErrors as $index => $errorOrGroup) {
 					if (is_string($index) && is_array($errorOrGroup)) {
 						$amount += count($errorOrGroup);
@@ -217,7 +213,7 @@ class UserErrors {
 		return $this->session;
 	}
 
-	protected function setOldErrors($returnMethod = self::ANY_RETURN_METHOD) {
+	protected function setOldErrors($returnMethod = self::SESSION_RETURN_METHOD) {
 		$returnMethod = $this->validateReturnMethod($returnMethod);
 		$workingMethodCode = (string) $returnMethod;
 		for($i = 0; $i < strlen($workingMethodCode); $i++) {
@@ -260,16 +256,12 @@ class UserErrors {
 		}
 	}
 
-	public function getErrors($returnMethod = self::ANY_RETURN_METHOD) {
+	public function getErrors($returnMethod = self::SESSION_RETURN_METHOD) {
 		$returnMethod = $this->validateReturnMethod($returnMethod);
 		$errors = array();
-		if($returnMethod !== self::ANY_RETURN_METHOD){
-			$methodName = $this->getReturnMethodName($returnMethod);
-			if (isset($this->oldErrors[$methodName])) {
-				$errors = $this->oldErrors[$methodName];
-			}
-		}else{
-			$errors = $this->oldErrors;
+		$methodName = $this->getReturnMethodName($returnMethod);
+		if (isset($this->oldErrors[$methodName])) {
+			$errors = $this->oldErrors[$methodName];
 		}
 
 		return $errors;
