@@ -6,7 +6,7 @@ class Session {
 
 	public function __construct() {
 		$this->ensureSession();
-		$this->container = new \ArrayObject(& $_SESSION);
+		$this->container = new \ArrayObject($_SESSION);
 	}
 
 	private function ensureSession() {
