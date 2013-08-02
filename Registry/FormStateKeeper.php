@@ -1,7 +1,7 @@
 <?php
 namespace RqData\Registry;
 
-class FormStateKeeper extends RqData\Core\Object {
+class FormStateKeeper extends \RqData\Core\Object {
 	private $session;
 
 	public function __construct() {

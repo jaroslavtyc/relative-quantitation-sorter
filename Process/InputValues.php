@@ -3,7 +3,7 @@ namespace RqData\Process;
 
 use RqData\Registry\UserErrors;
 use RqData\Process\Settings;
-use RqData\RequiredSettings\File\FileWithData;
+use RqData\RequiredSettings\File\WithData;
 use RqData\Process\Exceptions\EmptyInputFile;
 use RqData\Process\Exceptions\WrongInputFileFormat;
 
@@ -84,7 +84,7 @@ class InputValues extends Base {
 	private function manageResourceFileHistory() {
 		$this->setTimeTempnameKey();
 		if (self::KEEP_USER_RESOURCE_FILE) {
-			if (empty($_FILES[FileWithData::FILE_NAME]['tmp_name'])) {
+			if (empty($_FILES[WithData::FILE_NAME]['tmp_name'])) {
 				throw new Exception('No file to save');
 			}
 

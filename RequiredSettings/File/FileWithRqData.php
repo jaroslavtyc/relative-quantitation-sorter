@@ -1,7 +1,7 @@
 <?php
 namespace RqData\RequiredSettings\File;
 
-class FileWithRqData extends FileWithData {
+class FileWithRqData extends WithData {
 	const HUMAN_NAME = 'Soubor obsahuje RQ data';
 	const CODE = 'fileWithData';
 	const VALUE = '';

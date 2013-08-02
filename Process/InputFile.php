@@ -2,7 +2,7 @@
 namespace RqData\Process;
 
 use RqData\Registry\UserErrors;
-use RqData\RequiredSettings\File\FileWithData;
+use RqData\RequiredSettings\File\WithData;
 
 class InputFile extends Base {
 	private $filesInformations;
@@ -14,16 +14,16 @@ class InputFile extends Base {
 	}
 
 	public function process() {
-		if (!$this->getFilesInformations()->offsetExists(FileWithData::FILE_NAME)) {
+		if (!$this->getFilesInformations()->offsetExists(WithData::FILE_NAME)) {
 			$this->getErrors()->rememberError('chybí', 'Soubor');
 			throw new Exceptions\InputFileIsMissing;
 		} else {
-			$fileInfo = $this->getFilesInformations()->offsetGet(FileWithData::FILE_NAME);
+			$fileInfo = $this->getFilesInformations()->offsetGet(WithData::FILE_NAME);
 			if ($fileInfo['name'] === '') {
 				$this->getErrors()->rememberError('chybí', 'Soubor');
 				throw new Exceptions\InputFileIsMissing;
 			} else {
-				$this->uploadedFile = new \RqData\Html\UploadedFile(FileWithData::FILE_NAME);
+				$this->uploadedFile = new \RqData\Html\UploadedFile(WithData::FILE_NAME);
 			}
 		}
 	}

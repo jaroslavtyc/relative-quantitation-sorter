@@ -50,8 +50,8 @@ class OperationList extends RequiredSettings {
 		$fileWithRqData = new FileWithRqData();
 		$fileWithoutRqData = new FileWithoutRqData();
 		$this->operationList = array(
-			$fileWithRqData->optionMask => $fileWithRqData,
-			$fileWithoutRqData->optionMask => $fileWithoutRqData
+			$fileWithRqData->getOptionMask() => $fileWithRqData,
+			$fileWithoutRqData->getOptionMask() => $fileWithoutRqData
 		);
 	}
 }

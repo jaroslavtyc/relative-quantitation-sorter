@@ -1,7 +1,7 @@
 <?php
 namespace RqData\RequiredSettings\File;
 
-class FileWithoutRqData extends FileWithData {
+class FileWithoutRqData extends WithData {
 	const HUMAN_NAME = 'RQ data je nutné vypočítat';
 	const CODE = 'fileWitoutRqData';
 	const VALUE = '';

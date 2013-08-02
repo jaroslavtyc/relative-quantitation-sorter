@@ -2,22 +2,19 @@
 namespace RqData\Frontend\Controllers;
 
 class Homepage extends DisplayWithErrorMessages {
-	protected function setUpWorker() {
-		parent::setUpWorker();
-		$this->setUpValuesToView();
-		$this->setUpTemplatesToView();
+
+	public function display() {
+		$this->setUpValuesForFetch();
+		$this->setUpWebpageTemplateForFetch();
+		parent::display();
 	}
 
-	protected function render() {
-		$this->getFetcher()->display('index.tpl');
-	}
-
-	protected function setUpValuesToView() {
+	protected function setUpValuesForFetch() {
 		$this->getFetcher()->assign('formStatesHistory', $this->getFormStateKeeper());
 		$this->getFetcher()->assign('operationList', $this->getOperationList());
 		$this->getFetcher()->assign('consequence', $this->getConsequenceOfCtMaximum());
 		$this->getFetcher()->assign('measurementSettings', $this->getMeasurementSettings());
-		$this->getFetcher()->assign('inputFileName', \RqData\RequiredSettings\File\FileWithData::FILE_NAME);
+		$this->getFetcher()->assign('inputFileName', \RqData\RequiredSettings\File\WithData::FILE_NAME);
 		$this->getFetcher()->assign(
 			'measurementSettingsRegistry',
 			array(
@@ -27,7 +24,7 @@ class Homepage extends DisplayWithErrorMessages {
 		);
 	}
 
-	protected function setUpTemplatesToView() {
+	protected function setUpWebpageTemplateForFetch() {
 		$this->getFetcher()->assign('css', array('main.css', 'opentip.css', 'homepage.css'));
 		$this->getFetcher()->assign(
 			'headerJs',

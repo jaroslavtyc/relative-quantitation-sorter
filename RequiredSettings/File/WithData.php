@@ -3,7 +3,7 @@ namespace RqData\RequiredSettings\File;
 /**
  * Base of classses describing file content.
  */
-abstract class FileWithData extends \RqData\RequiredSettings\Options\RequiredSettings {
+abstract class WithData extends \RqData\RequiredSettings\Options\RequiredSettings {
 	const FILE_NAME = 'rozmeryBrebery';
 
 	/**
@@ -21,6 +21,10 @@ abstract class FileWithData extends \RqData\RequiredSettings\Options\RequiredSet
 		$this->initializeListOfExtendingSettings();
 		$this->makePropertiesReadable('optionMask', 'listOfExtendingSettings');
 		parent::__construct(array(), $this->listOfExtendingSettings);
+	}
+
+	public function getOptionMask() {
+		return $this->optionMask;
 	}
 
 	abstract protected function initializeListOfExtendingSettings();

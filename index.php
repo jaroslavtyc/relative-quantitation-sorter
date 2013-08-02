@@ -1,10 +1,11 @@
 <?php
-namespace RqData\Controllers;
+namespace RqData\Frontend\Controllers;
 
 error_reporting(-1);
 require(__DIR__ . '/../universal/autoload.php');
 require(__DIR__ . '/libraries/autoload.php');
 
+/*
 require_once __DIR__ . '/libraries/mbence/opentbs-bundle/MBence/OpenTBSBundle/lib/tbs_class.php';
 
 
@@ -24,8 +25,9 @@ var_dump(file_put_contents($resultFile, $formater->getResult()));
 var_dump(file_exists($resultFile));
 die($resultFile);
 $formater->Show(OPENTBS_DOWNLOAD, basename($resultFile));
-
-/*
-$controller = new Homepage();
-$controller->display();
 */
+
+$smarty = new \Smarty;
+$fetcher = new \RqData\View\SmartyFetcher($smarty, 'index.tpl');
+$controller = new Homepage($fetcher);
+$controller->display();
