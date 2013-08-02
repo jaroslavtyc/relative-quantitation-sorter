@@ -1,10 +1,10 @@
 <?php
 namespace RqData\Frontend\Controllers;
 
-use RqData\View\SmartyViewer;
+use RqData\View\FetcherViewer;
 use RqData\Registry\UserErrors;
 
-abstract class DisplayWithErrorMessages extends SmartyViewer {
+abstract class DisplayWithErrorMessages extends FetcherViewer {
 	const ERROR_ANCHOR_NAME = 'process-error-report';
 
 	private $errors;
