@@ -6,11 +6,7 @@ class ReferenceGenes extends ExtendingOptions {
 	const HUMAN_NAME = 'referenční geny';
 	const VALUE = '';
 
-	protected function setNote() {
-		$this->note = new ReferenceGenesSeparator;
-	}
-
 	protected function initializeNote() {
-		$this->setNote(FALSE);
+		$this->setNote(new ReferenceGenesSeparator);
 	}
 }
