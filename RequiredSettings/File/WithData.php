@@ -19,12 +19,7 @@ abstract class WithData extends \RqData\RequiredSettings\Options\RequiredSetting
 	public function __construct($optionMask) {
 		$this->setOptionMask($optionMask);
 		$this->initializeListOfExtendingSettings();
-		$this->makePropertiesReadable('optionMask', 'listOfExtendingSettings');
 		parent::__construct(array(), $this->listOfExtendingSettings);
-	}
-
-	public function getOptionMask() {
-		return $this->optionMask;
 	}
 
 	abstract protected function initializeListOfExtendingSettings();
@@ -35,6 +30,10 @@ abstract class WithData extends \RqData\RequiredSettings\Options\RequiredSetting
 
 	public function getListOfExtendingSettings() {
 		return $this->listOfExtendingSettings;
+	}
+
+	public function getOptionMask() {
+		return $this->optionMask;
 	}
 
 	protected function setOptionMask($optionMask) {

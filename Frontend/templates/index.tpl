@@ -16,9 +16,9 @@
 				<label class="nowrap">{$operation->humanName}
 					<input type="radio" class="display_trigger_name_{$operation->getOptionMask()}" id="operation_{$operation->getOptionMask()}" name="operation" value="{$operation->getOptionMask()}"{if $operation->getOptionMask() == $formStatesHistory->resolveValue('operation', $operation->getOptionMask())} {/if}{if $smarty.foreach.operations.last} checked="checked" {/if}/>&nbsp;
 				</label>
-{if $operation->listOfExtendingSettings}
+{if $operation->getListOfExtendingSettings}
 				<ul class="display_on_trigger_name_{$operation->getOptionMask()} operation_extended_settings" id="operation_extended_settings_{$operation->getOptionMask()}">
-{foreach $operation->listOfExtendingSettings item=extendedSetting}
+{foreach $operation->getListOfExtendingSettings item=extendedSetting}
 					<li class="plain-tooltip operation-extended-setting" onmouseover="showTooltipText(this, '{$extendedSetting->note->humanName}{if $extendedSetting->note->value !== ''} {$extendedSetting->note->value}{/if}');">
 						<label class="nowrap">{$extendedSetting->humanName}<textarea class="float-right" name="{$extendedSetting->code}" rows="1" cols="20">{$formStatesHistory->resolveValue($extendedSetting->code, $extendedSetting->value)}</textarea>
 						</label>
