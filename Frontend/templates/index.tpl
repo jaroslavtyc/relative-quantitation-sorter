@@ -1,4 +1,4 @@
-{extends 'abstract/content.tpl'}
+{extends './abstract/content.tpl'}
 {block "page-content"}
 <form method='post' action='process.php' enctype='multipart/form-data'>
 	<fieldset>
