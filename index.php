@@ -28,6 +28,7 @@ $formater->Show(OPENTBS_DOWNLOAD, basename($resultFile));
 */
 
 $smarty = new \Smarty;
-$fetcher = new \RqData\View\SmartyFetcher($smarty, 'index.tpl');
+$smarty->setPluginsDir(__DIR__ . '/View/Function');
+$fetcher = new \RqData\View\SmartyFetcher($smarty, __DIR__ . '/Frontend/Templates/index.tpl');
 $controller = new Homepage($fetcher);
 $controller->display();
