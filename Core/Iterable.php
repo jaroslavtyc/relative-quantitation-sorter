@@ -2,8 +2,8 @@
 namespace RqData\Core;
 
 class Iterable extends Object implements \Iterator {
-	protected $data;
-	protected $currentKey;
+	private $data;
+	private $currentKey;
 
 	public function __construct(array $data) {
 		$this->setData($data);
@@ -44,7 +44,7 @@ class Iterable extends Object implements \Iterator {
 
 	public function isLast() {
 		next($this->data);
-		$isLast = (NULL === key($this->data));
+		$isLast = (is_null(key($this->data)));
 		prev($this->data);
 
 		return $isLast;
