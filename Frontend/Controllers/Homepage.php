@@ -37,7 +37,7 @@ class Homepage extends DisplayWithErrorMessages {
 	}
 
 	protected function getOperationList() {
-		return new \RqData\RequiredSettings\Options\OperationList;
+		return new \RqData\RequiredSettings\Options\Operations;
 	}
 
 	protected function getConsequenceOfCtMaximum() {

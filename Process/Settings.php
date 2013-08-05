@@ -133,11 +133,11 @@ class Settings extends Base {
 	}
 
 	/**
-	 * @return RqData\RequiredSettings\Options\OperationList
+	 * @return RqData\RequiredSettings\Options\Operations
 	 */
 	protected function getOperationList() {
 		if (!isset($this->operationList)) {
-			$this->operationList = new \RqData\RequiredSettings\Options\OperationList;
+			$this->operationList = new \RqData\RequiredSettings\Options\Operations;
 		}
 		return $this->operationList;
 	}

@@ -1,7 +1,7 @@
 <?php
 namespace RqData\RequiredSettings;
 
-class Settings extends \RqData\Core\Iterable {
+abstract class Settings extends \RqData\Core\Iterable implements \RqData\Html\SingleOption {
 	public function __construct() {
 		parent::__construct(array());
 	}

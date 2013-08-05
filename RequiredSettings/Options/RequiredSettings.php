@@ -3,7 +3,7 @@ namespace RqData\RequiredSettings\Options;
 /**
  * Base for classes with options of work types and input file content
  */
-abstract class RequiredSettings extends \RqData\Core\Iterable {
+abstract class RequiredSettings extends \RqData\Core\Iterable implements \RqData\Html\SingleOption {
 	const SUBJECT_NAME = 1; //b1
 	const GENE_NAMES = 2; //b10
 	const CT_VALUES = 4; //b100
@@ -26,5 +26,17 @@ abstract class RequiredSettings extends \RqData\Core\Iterable {
 
 	public function getDependentSettings() {
 		return $this->dependentSettings;
+	}
+
+	public function getCode() {
+		return self::CODE;
+	}
+
+	public function getHumanName() {
+		return self::HUMAN_NAME;
+	}
+
+	public function getValue() {
+		return self::VALUE;
 	}
 }

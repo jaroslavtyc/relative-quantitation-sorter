@@ -16,4 +16,16 @@ class FileWithoutRqData extends WithData {
 			 new \RqData\RequiredSettings\File\ReferenceGenes,
 		));
 	}
+
+	public function getCode() {
+		return self::CODE;
+	}
+
+	public function getHumanName() {
+		return self::HUMAN_NAME;
+	}
+
+	public function getValue() {
+		return self::VALUE;
+	}
 }

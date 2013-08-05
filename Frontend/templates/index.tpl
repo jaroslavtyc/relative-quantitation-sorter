@@ -13,14 +13,14 @@
 			<h3>Určení obsahu souboru</h3>
 {foreach from=$operationList item=operation name=operations}
 			<div class="half-width operation">
-				<label class="nowrap">{$operation->humanName}
+				<label class="nowrap">{$operation->getHumanName()}
 					<input type="radio" class="display_trigger_name_{$operation->getOptionMask()}" id="operation_{$operation->getOptionMask()}" name="operation" value="{$operation->getOptionMask()}"{if $operation->getOptionMask() == $formStatesHistory->resolveValue('operation', $operation->getOptionMask())} {/if}{if $smarty.foreach.operations.last} checked="checked" {/if}/>&nbsp;
 				</label>
-{if $operation->getListOfExtendingSettings}
+{if count($operation->getListOfExtendingSettings()) > 0}
 				<ul class="display_on_trigger_name_{$operation->getOptionMask()} operation_extended_settings" id="operation_extended_settings_{$operation->getOptionMask()}">
-{foreach $operation->getListOfExtendingSettings item=extendedSetting}
-					<li class="plain-tooltip operation-extended-setting" onmouseover="showTooltipText(this, '{$extendedSetting->note->humanName}{if $extendedSetting->note->value !== ''} {$extendedSetting->note->value}{/if}');">
-						<label class="nowrap">{$extendedSetting->humanName}<textarea class="float-right" name="{$extendedSetting->code}" rows="1" cols="20">{$formStatesHistory->resolveValue($extendedSetting->code, $extendedSetting->value)}</textarea>
+{foreach $operation->getListOfExtendingSettings() item=extendedSetting}
+					<li class="plain-tooltip operation-extended-setting" onmouseover="showTooltipText(this, '{$extendedSetting->getNote()->getHumanName()}{if $extendedSetting->getNote()->getValue() !== ''} {$extendedSetting->getNote()->getValue()}{/if}');">
+						<label class="nowrap">{$extendedSetting->getHumanName()}<textarea class="float-right" name="{$extendedSetting->getCode()}" rows="1" cols="20">{$formStatesHistory->resolveValue($extendedSetting->getCode(), $extendedSetting->getValue())}</textarea>
 						</label>
 					</li>
 {/foreach}
@@ -31,26 +31,26 @@
 		</div>
 		<hr />
 		<div>
-			<h3><label>{$consequence->getMaximalCtValue()->geHumanName()}</label></h3>
-			Pokud {$consequence->getMaximalCtValue()->geHumanName()} dosáhne
+			<h3><label>{$consequence->getMaximalCtValue()->getHumanName()}</label></h3>
+			Pokud {$consequence->getMaximalCtValue()->getHumanName()} dosáhne
 			<select name="optional[{$consequence->getMaximalCtValue()->getCode()}]">
 				<option value="{$consequence->getMaximalCtValue()->getValue()}">{$consequence->getMaximalCtValue()->getValue()}</option>
-			</select>, pak {$consequence->getRqValueEdge()->humanName} je
-				<input type="text" name="optional[{$consequence->getRqValueEdge()->code}]" value="{$formStatesHistory->resolveValue($consequence->getRqValueEdge()->code, $consequence->getRqValueEdge()->value)}" size="5" />
+			</select>, pak {$consequence->getRqValueEdge()->getHumanName()} je
+				<input type="text" name="optional[{$consequence->getRqValueEdge()->getCode()}]" value="{$formStatesHistory->resolveValue($consequence->getRqValueEdge()->getCode(), $consequence->getRqValueEdge()->getValue())}" size="5" />
 			a každá
 			<ul>
-				<li>{$consequence->getReplacementValueUnderMaximum()->humanName} bude
-					<select name="optional[{$consequence->getReplacementValueUnderMaximum()->code}]">
-						<option value="{$consequence->getReplacementValueUnderMaximum()->value}">{$consequence->getReplacementValueUnderMaximum()->value}</option>
+				<li>{$consequence->getReplacementValueUnderMaximum()->getHumanName()} bude
+					<select name="optional[{$consequence->getReplacementValueUnderMaximum()->getCode()}]">
+						<option value="{$consequence->getReplacementValueUnderMaximum()->getValue()}">{$consequence->getReplacementValueUnderMaximum()->getValue()}</option>
 					</select>
 				</li>
-				<li>{$consequence->getReplacementValueOverMaximum()->humanName} bude
-					<select name="optional[{$consequence->getReplacementValueOverMaximum()->code}]">
-						<option value="{$consequence->getReplacementValueOverMaximum()->value}">
-							{if $consequence->getReplacementValueOverMaximum()->value == ''}
-								{">>prázný řetězec<<"|escape}
+				<li>{$consequence->getReplacementValueOverMaximum()->getHumanName()} bude
+					<select name="optional[{$consequence->getReplacementValueOverMaximum()->getCode()}]">
+						<option value="{$consequence->getReplacementValueOverMaximum()->getValue()}">
+							{if $consequence->getReplacementValueOverMaximum()->getValue() == ''}
+								{">>prázný řetězec<<"}
 							{else}
-								{$consequence->getReplacementValueOverMaximum()->value}
+								{$consequence->getReplacementValueOverMaximum()->getValue()}
 							{/if}
 							</option>
 					</select>
@@ -62,7 +62,7 @@
 			<h3>{$measurementSettingsRegistry.name}</h3>
 			{foreach from=$measurementSettings item=measurementSetting}
 				<label>
-					{$measurementSetting->humanName}:&nbsp;<input type="text" name="optional[{$measurementSettingsRegistry.code}][{$measurementSetting->code}]" value="{$formStatesHistory->resolveArrayValue($measurementSettingsRegistry.code, $measurementSetting->code, $measurementSetting->value)}" size="10" />
+					{$measurementSetting->getHumanName()}:&nbsp;<input type="text" name="optional[{$measurementSettingsRegistry.code}][{$measurementSetting->getCode()}]" value="{$formStatesHistory->resolveArrayValue($measurementSettingsRegistry.code, $measurementSetting->getCode(), $measurementSetting->getValue())}" size="10" />
 				</label>
 			{/foreach}
 		</div>

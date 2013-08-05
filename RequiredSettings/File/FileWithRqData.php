@@ -13,4 +13,16 @@ class FileWithRqData extends WithData {
 	protected function initializeListOfExtendingSettings() {
 		$this->setListOfExtendedSettings(array());
 	}
+
+	public function getCode() {
+		return self::CODE;
+	}
+
+	public function getHumanName() {
+		return self::HUMAN_NAME;
+	}
+
+	public function getValue() {
+		return self::VALUE;
+	}
 }

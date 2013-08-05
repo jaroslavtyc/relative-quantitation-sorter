@@ -6,7 +6,19 @@ class Calibrator extends ExtendingOptions {
 	const HUMAN_NAME = 'kalibrátor';
 	const VALUE = '';
 
-	protected function initializeNote() {
-		$this->setNote(new CalibratorExplaining);
+	public function __construct() {
+		parent::__construct(new CalibratorExplaining);
+	}
+
+	public function getCode() {
+		return self::CODE;
+	}
+
+	public function getHumanName() {
+		return self::HUMAN_NAME;
+	}
+
+	public function getValue() {
+		return self::VALUE;
 	}
 }

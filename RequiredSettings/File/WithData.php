@@ -1,7 +1,7 @@
 <?php
 namespace RqData\RequiredSettings\File;
 /**
- * Base of classses describing file content.
+ * Describing file content.
  */
 abstract class WithData extends \RqData\RequiredSettings\Options\RequiredSettings {
 	const FILE_NAME = 'rozmeryBrebery';

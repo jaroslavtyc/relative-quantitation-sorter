@@ -7,16 +7,25 @@ use RqData\RequiredSettings\File\FileWithoutRqData;
 /**
  * Keeper of work / file types
  */
-class OperationList extends RequiredSettings {
+class Operations extends RequiredSettings {
 	const HUMAN_NAME = 'určení obsahu souboru';
 	const CODE = 'operationType';
 	const VALUE = '';
 
-	private $operationList;
+	private $operations;
 
 	public function __construct() {
-		$this->initializeOperationList();
-		parent::__construct($this->operationList);
+		$this->initializeOperations();
+		parent::__construct($this->operations);
+	}
+
+	private function initializeOperations() {
+		$fileWithRqData = new FileWithRqData();
+		$fileWithoutRqData = new FileWithoutRqData();
+		$this->operations = array(
+			$fileWithRqData->getOptionMask() => $fileWithRqData,
+			$fileWithoutRqData->getOptionMask() => $fileWithoutRqData
+		);
 	}
 
 	/**
@@ -26,7 +35,7 @@ class OperationList extends RequiredSettings {
 	 * @return bool
 	 */
 	public function isOperation($intBinKey) {
-		return isset($this->operationList[$intBinKey]);
+		return isset($this->operations[$intBinKey]);
 	}
 
 	/**
@@ -40,18 +49,6 @@ class OperationList extends RequiredSettings {
 			return FALSE;
 		}
 
-		return $this->operationList[$intBinKey];
-	}
-
-	/**
-	 * Sets types of available operations
-	 */
-	private function initializeOperationList() {
-		$fileWithRqData = new FileWithRqData();
-		$fileWithoutRqData = new FileWithoutRqData();
-		$this->operationList = array(
-			$fileWithRqData->getOptionMask() => $fileWithRqData,
-			$fileWithoutRqData->getOptionMask() => $fileWithoutRqData
-		);
+		return $this->operations[$intBinKey];
 	}
 }
