@@ -1,5 +1,5 @@
 {block "checks-initialize"}
-	{config_load file="base.tpl.ini" section="checks"}
+	{config_load file="./Frontend/settings/base.tpl.ini" section="checks"}
 	{checks cookie=#cookie_check# css=#css_check# js=#js_check# assign=checks} {* into standard class are assigned objects of proper Check type *}
 {/block}
 {block "doctype"}
@@ -7,11 +7,11 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 {/block}
 {block "html"}
-	{config_load file="base.tpl.ini" section="html"}
+	{config_load file="./Frontend/settings/base.tpl.ini" section="html"}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{#xml_lang#}" lang="{#lang#}">
 {/block}
 {block "head"}
-	{config_load file="base.tpl.ini" section="head"}
+	{config_load file="./Frontend/settings/base.tpl.ini" section="head"}
 	<head>
 		<title>{#title#}</title>
 	   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -30,7 +30,7 @@
 	</head>
 {/block}
 	<body>
-{config_load file="base.tpl.ini" section="main_divs"}
+{config_load file="./Frontend/settings/base.tpl.ini" section="main_divs"}
 		<div{if #wrapper_div_class_name#} class='{#wrapper_div_class_name#}'{/if}{if #wrapper_div_id_name#} id='{#wrapper_div_id_name#}'{/if}>
 			<div{if #content_div_class_name#} class='{#content_div_class_name#}'{/if}{if #content_div_id_name#} id='{#content_div_id_name#}'{/if}>
 {block "checks-results"}
@@ -77,7 +77,7 @@
 				<span id="{$technologyCode}-required"{if $technologyCode != 'css'} style="display: none"{/if}> {* css and js technologies are cross-checking themselves, that means: if css and js are both unsuported, content is displayed; look at checks.js *}
 	{/foreach}
 	{block "allowed-content"}
-		{config_load file="base.tpl.ini" section="allowed-content"}
+		{config_load file="./Frontend/settings/base.tpl.ini" section="allowed-content"}
 					<div{if #main_content_div_class_name#} class="{#main_content_div_class_name#}"{/if}{if #main_content_div_id_name#} id="{#main_content_div_id_name#}"{/if}>
 						BASE CONTENT
 					</div>
