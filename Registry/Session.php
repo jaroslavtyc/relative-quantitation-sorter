@@ -43,7 +43,7 @@ class Session {
 	}
 
 	public function getValue($name) {
-		$this->getContainer()->offsetGet($name);
+		return $this->getContainer()->offsetGet($name);
 	}
 
 	public function isValueSet($name) {
