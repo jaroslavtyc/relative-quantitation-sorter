@@ -33,7 +33,7 @@ abstract class DisplayWithErrorMessages extends FetcherViewer {
 
 	protected function getErrorMessages() {
 		if ($this->getErrors()->existsOldError()) {
-			return $this->getErrors()->getErrors(UserErrors::DEFAULT_RETURN_METHOD);
+			return $this->getErrors()->getErrors();
 		} else {
 			return array();
 		}
