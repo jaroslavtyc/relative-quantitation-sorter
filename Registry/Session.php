@@ -9,6 +9,10 @@ class Session {
 		$this->container = new \ArrayObject($_SESSION);
 	}
 
+	public function __destruct() {
+		$_SESSION = $this->getContainer()->getArrayCopy();
+	}
+
 	private function ensureSession() {
 		if ($this->getId() === '') { // session does not exists yet
 			if ($this->haveBeenHeadersSent()) { // any header was already sent, session can not be started
