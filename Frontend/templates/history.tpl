@@ -1,4 +1,4 @@
-{extends 'abstract/content.tpl'}
+{extends './abstract/content.tpl'}
 {block "page-content"}
 <table id="file-history">
 	<thead>
