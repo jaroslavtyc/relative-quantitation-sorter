@@ -12,6 +12,19 @@ class User {
 		$this->password = $password;
 	}
 
+	public function login($login, $password) {
+		if (!$this->isLoggedIn()) {
+			if ($this->authenticator->isAuthenticated($this->login, $this->password)) {
+				$this->login = $login;
+				$this->password = $password;
+			} else {
+				throw new \RqData\Security\Exceptions\IncorrectCredentials();
+			}
+		} else {
+			throw new \RqData\Security\Exceptions\UserIsAlreadyLoggedIn();
+		}
+	}
+
 	public function isLoggedIn() {
 		return $this->authenticator->isAuthenticated($this->login, $this->password);
 	}

@@ -19,7 +19,7 @@
 		<meta name="description" lang="{#lang#}" content="{#description#}" />
 	{if isset($css)}
 		{foreach from=$css item=cssFile}
-		<link rel="stylesheet" type="text/css" media="all" href="css/{$cssFile}" />
+		<link rel="stylesheet" type="text/css" media="all" href="{$cssFile}" />
 		{/foreach}
 	{/if}
 	{if isset($headerJs)}
